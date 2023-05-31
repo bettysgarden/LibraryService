@@ -14,9 +14,6 @@ public class Author {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "surname")
-
-    private String surname;
     @Column(name = "website")
 
     private String website;
@@ -39,7 +36,6 @@ public class Author {
 
     public Author(String name, String surname, String website, String description) {
         this.name = name;
-        this.surname = surname;
         this.website = website;
         this.description = description;
     }
@@ -60,14 +56,6 @@ public class Author {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public String getWebsite() {
         return website;
     }
@@ -86,7 +74,7 @@ public class Author {
 
     @Override
     public String toString() {
-        return "Tutorial [id=" + id + ", surname=" + surname + ", name=" + name +
+        return "Tutorial [id=" + id + ", name=" + name +
                 ", desc=" + description + ", website=" + website + "]";
     }
 }
