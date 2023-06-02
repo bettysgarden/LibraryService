@@ -1,19 +1,19 @@
 package com.example.library.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "review")
 public class Review {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "rating")
@@ -28,8 +28,11 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "book_idbook", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private Book book;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    private Set<Comment> comments = new HashSet<>();
+
 
     public Review() {
     }
@@ -91,4 +94,18 @@ public class Review {
                 ", book=" + book +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Review)) return false;
+        Review review = (Review) o;
+        return id == review.id && rating == review.rating && Objects.equals(content, review.content) && Objects.equals(timeAdded, review.timeAdded);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, rating, content, timeAdded);
+    }
+
 }

@@ -4,24 +4,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "genre")
 public class Genre {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "title")
     private String title;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
-            mappedBy = "author")
-    @JsonIgnore
+    @ManyToMany(mappedBy = "genres")
     private Set<Book> books = new HashSet<>();
 
     public Genre() {
@@ -64,4 +60,17 @@ public class Genre {
                 ", books=" + books +
                 '}';
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Genre)) return false;
+        Genre genre = (Genre) o;
+        return id == genre.id && Objects.equals(title, genre.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title);
+    }
+
 }

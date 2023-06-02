@@ -1,15 +1,17 @@
 package com.example.library.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.time.Year;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "book")
 public class Book {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "title")
@@ -19,9 +21,9 @@ public class Book {
     private int rating;
 
     @Column(name = "date_published")
-    private int yearPublished;
+    private Year yearPublished;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 10000)
     private String description;
 
     @Column(name = "cover")
@@ -32,8 +34,7 @@ public class Book {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             },
-            mappedBy = "author")
-    @JsonIgnore
+            mappedBy = "books")
     private Set<Author> authors = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY,
@@ -46,6 +47,8 @@ public class Book {
             inverseJoinColumns = { @JoinColumn(name = "genre_idgenre") })
     private Set<Genre> genres = new HashSet<>();
 
+    @OneToMany(mappedBy = "book")
+    private Set<Review> reviews = new HashSet<>();
 
     public Book() {
     }
@@ -57,9 +60,9 @@ public class Book {
                 ", cover =" + cover + ", rating=" + rating + "]";
     }
 
-    public Book(String title, int rating, int yearPublished, String description, String cover) {
+    public Book(long id, String title, Year yearPublished, String description, String cover) {
+        this.id = id;
         this.title = title;
-        this.rating = rating;
         this.yearPublished = yearPublished;
         this.description = description;
         this.cover = cover;
@@ -89,11 +92,11 @@ public class Book {
         this.rating = rating;
     }
 
-    public int getYearPublished() {
+    public Year getYearPublished() {
         return yearPublished;
     }
 
-    public void setYearPublished(int date_published) {
+    public void setYearPublished(Year date_published) {
         this.yearPublished = date_published;
     }
 
@@ -112,4 +115,17 @@ public class Book {
     public void setCover(String cover) {
         this.cover = cover;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book)) return false;
+        Book book = (Book) o;
+        return id == book.id && Objects.equals(title, book.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title);
+    }
 }
+

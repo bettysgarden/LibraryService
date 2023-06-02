@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -14,6 +15,7 @@ import java.util.Set;
 
 public class Comment {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "content")
@@ -25,7 +27,6 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "review_idreview", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private Review review;
 
     public Comment() {
@@ -78,4 +79,17 @@ public class Comment {
                 ", review=" + review +
                 '}';
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Comment)) return false;
+        Comment comment = (Comment) o;
+        return id == comment.id && Objects.equals(content, comment.content) && Objects.equals(timeAdded, comment.timeAdded);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, content, timeAdded);
+    }
+
 }
