@@ -24,17 +24,17 @@ public class BooksService implements BooksServiceInterface {
     }
 
     @Override
-    public List<Book> getAll(){
+    public List<Book> getAll() {
         return booksRepository.findAll();
     }
 
     @Override
-    public void save(Book book){
+    public void save(Book book) {
         booksRepository.save(book);
     }
 
     @Override
-    public void delete(long id){
+    public void delete(long id) {
         booksRepository.deleteById(id);
     }
 }

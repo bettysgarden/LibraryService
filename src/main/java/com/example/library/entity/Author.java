@@ -33,6 +33,14 @@ public class Author {
             inverseJoinColumns = {@JoinColumn(name = "book_idbook")})
     private Set<Book> books = new HashSet<>();
 
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
+    }
+
     public Author() {
     }
 

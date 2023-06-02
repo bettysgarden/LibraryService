@@ -37,6 +37,8 @@ class BooksServiceTest {
         sampleBook.setId(1L);
         sampleBook.setTitle("Sample Book");
 
+        // Настройка поведения заглушки
+        // вы можете указать, что заглушка должна вернуть определенное значение при вызове определенного метода
         Mockito.when(booksRepository.findById(1L)).thenReturn(Optional.of(sampleBook));
 
         booksService.setBooksRepository(booksRepository);
@@ -72,9 +74,8 @@ class BooksServiceTest {
 
         booksService.save(sampleBook);
 
-        // In Mockito, the verify() method is used to assert that a certain method has been called
-        // on a mocked object with specific arguments. It allows you to verify the interactions
-        // between the test code and the mocked object.
+        // Проверка вызовов: Mockito также предоставляет возможность проверить,
+        // какие методы заглушки были вызваны и с какими параметрами
         Mockito.verify(booksRepository, Mockito.times(1)).save(sampleBook);
     }
 

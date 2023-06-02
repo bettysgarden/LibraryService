@@ -21,17 +21,5 @@ public class BooksController {
         List<Book> booksList = booksService.getAll();
         return ResponseEntity.ok(booksList);
     }
-
-//    @DeleteMapping("/delete/{id}")
-//    public ResponseEntity<?> deleteTask(@PathVariable int id) {
-//        booksService.delete(id);
-//        return ResponseEntity.ok().build();
-//    }
-//
-//    @PostMapping("/add")
-//    public ResponseEntity<?> addTask(@RequestBody Book book) {
-//        booksService.save(book);
-//        return ResponseEntity.ok().build();
-//    }
 }
 
