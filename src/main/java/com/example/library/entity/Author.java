@@ -17,12 +17,12 @@ public class Author {
     private String name;
 
     @Column(name = "website")
-
     private String website;
-    @Column(name = "description", length = 10000)
 
+    @Column(name = "description", length = 10000)
     private String description;
 
+    // the owning side
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
@@ -32,14 +32,6 @@ public class Author {
             joinColumns = {@JoinColumn(name = "author_idauthor")},
             inverseJoinColumns = {@JoinColumn(name = "book_idbook")})
     private Set<Book> books = new HashSet<>();
-
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
-    }
 
     public Author() {
     }
@@ -82,6 +74,13 @@ public class Author {
         this.description = description;
     }
 
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
+    }
     @Override
     public String toString() {
         return "Tutorial [id=" + id + ", name=" + name +

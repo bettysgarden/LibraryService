@@ -28,10 +28,10 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "book_idbook", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Book book;
+    protected Book book;
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
-    private Set<Comment> comments = new HashSet<>();
+    protected Set<Comment> comments = new HashSet<>();
 
 
     public Review() {

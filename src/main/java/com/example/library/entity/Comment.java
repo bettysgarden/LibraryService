@@ -1,6 +1,5 @@
 package com.example.library.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -27,7 +26,7 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "review_idreview", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Review review;
+    protected Review review;
 
     public Comment() {
     }
