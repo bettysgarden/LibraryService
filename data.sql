@@ -12,19 +12,19 @@ INSERT INTO genre (title)
 VALUES ('Historical Fiction');
 
 INSERT INTO book_has_genre (book_idbook, genre_idgenre)
-VALUES ((SELECT idbook FROM book WHERE title LIKE 'The Seven Husbands of Evelyn Hugo'),
-        (SELECT idgenre FROM genre WHERE title LIKE 'Fiction'));
+VALUES ((SELECT id FROM book WHERE title LIKE 'The Seven Husbands of Evelyn Hugo'),
+        (SELECT id FROM genre WHERE title LIKE 'Fiction'));
 
 INSERT INTO book_has_genre (book_idbook, genre_idgenre)
-VALUES ((SELECT idbook FROM book WHERE title LIKE 'The Seven Husbands of Evelyn Hugo'),
-        (SELECT idgenre FROM genre WHERE title LIKE 'Romance'));
+VALUES ((SELECT id FROM book WHERE title LIKE 'The Seven Husbands of Evelyn Hugo'),
+        (SELECT id FROM genre WHERE title LIKE 'Romance'));
 
 INSERT INTO book_has_genre (book_idbook, genre_idgenre)
-VALUES ((SELECT idbook FROM book WHERE title LIKE 'The Seven Husbands of Evelyn Hugo'),
-        (SELECT idgenre FROM genre WHERE title LIKE 'Historical Fiction'));
+VALUES ((SELECT id FROM book WHERE title LIKE 'The Seven Husbands of Evelyn Hugo'),
+        (SELECT id FROM genre WHERE title LIKE 'Historical Fiction'));
 INSERT INTO book_has_genre (book_idbook, genre_idgenre)
-VALUES ((SELECT idbook FROM book WHERE title LIKE 'The Seven Husbands of Evelyn Hugo'),
-        (SELECT idgenre FROM genre WHERE title LIKE 'Contemporary'));
+VALUES ((SELECT id FROM book WHERE title LIKE 'The Seven Husbands of Evelyn Hugo'),
+        (SELECT id FROM genre WHERE title LIKE 'Contemporary'));
 
 INSERT INTO author (name, website, description)
 VALUES ('Taylor Jenkins Reid',
@@ -32,8 +32,8 @@ VALUES ('Taylor Jenkins Reid',
         'Taylor Jenkins Reid is the New York Times bestselling author of Carrie Soto Is Back, Malibu Rising, Daisy Jones & The Six, and The Seven Husbands of Evelyn Hugo, as well as four other novels. She lives in Los Angeles. You can follow her on Instagram @tjenkinsreid.');
 
 INSERT INTO author_has_book (author_idauthor, book_idbook)
-VALUES ((Select idauthor from author where name LIKE 'Taylor Jenkins Reid'),
-        (SELECT idbook FROM book WHERE title LIKE 'The Seven Husbands of Evelyn Hugo')
+VALUES ((Select id from author where name LIKE 'Taylor Jenkins Reid'),
+        (SELECT id FROM book WHERE title LIKE 'The Seven Husbands of Evelyn Hugo')
         );
 ---------------------------------------------
 
@@ -54,24 +54,24 @@ INSERT INTO genre (title)
 VALUES ('Books about books');
 
 INSERT INTO book_has_genre (book_idbook, genre_idgenre)
-VALUES ((SELECT idbook FROM book WHERE title LIKE 'Book Lovers'),
-        (SELECT idgenre FROM genre WHERE title LIKE 'Fiction'));
+VALUES ((SELECT id FROM book WHERE title LIKE 'Book Lovers'),
+        (SELECT id FROM genre WHERE title LIKE 'Fiction'));
 
 INSERT INTO book_has_genre (book_idbook, genre_idgenre)
-VALUES ((SELECT idbook FROM book WHERE title LIKE 'Book Lovers'),
-        (SELECT idgenre FROM genre WHERE title LIKE 'Romance'));
+VALUES ((SELECT id FROM book WHERE title LIKE 'Book Lovers'),
+        (SELECT id FROM genre WHERE title LIKE 'Romance'));
 
 INSERT INTO book_has_genre (book_idbook, genre_idgenre)
-VALUES ((SELECT idbook FROM book WHERE title LIKE 'Book Lovers'),
-        (SELECT idgenre FROM genre WHERE title LIKE 'Contemporary'));
+VALUES ((SELECT id FROM book WHERE title LIKE 'Book Lovers'),
+        (SELECT id FROM genre WHERE title LIKE 'Contemporary'));
 
 INSERT INTO book_has_genre (book_idbook, genre_idgenre)
-VALUES ((SELECT idbook FROM book WHERE title LIKE 'Book Lovers'),
-        (SELECT idgenre FROM genre WHERE title LIKE 'Contemporary Romance'));
+VALUES ((SELECT id FROM book WHERE title LIKE 'Book Lovers'),
+        (SELECT id FROM genre WHERE title LIKE 'Contemporary Romance'));
 
 INSERT INTO book_has_genre (book_idbook, genre_idgenre)
-VALUES ((SELECT idbook FROM book WHERE title LIKE 'Book Lovers'),
-        (SELECT idgenre FROM genre WHERE title LIKE 'Books about books'));
+VALUES ((SELECT id FROM book WHERE title LIKE 'Book Lovers'),
+        (SELECT id FROM genre WHERE title LIKE 'Books about books'));
 
 INSERT INTO author (name, description)
 VALUES ('Emily Henry',
@@ -79,8 +79,8 @@ VALUES ('Emily Henry',
         Find her on Instagram @EmilyHenryWrites.');
 
 INSERT INTO author_has_book (author_idauthor, book_idbook)
-VALUES (        (Select idauthor from author where name LIKE 'Emily Henry'),
-        (SELECT idbook FROM book WHERE title LIKE 'Book Lovers'));
+VALUES (        (Select id from author where name LIKE 'Emily Henry'),
+        (SELECT id FROM book WHERE title LIKE 'Book Lovers'));
 
 
 -------------------------------------------------------------------
@@ -91,21 +91,21 @@ VALUES ('Daisy Jones & The Six',
 
 
 INSERT INTO book_has_genre (book_idbook, genre_idgenre)
-VALUES ((SELECT idbook FROM book WHERE title LIKE 'Daisy Jones & The Six'),
-        (SELECT idgenre FROM genre WHERE title LIKE 'Fiction'));
+VALUES ((SELECT id FROM book WHERE title LIKE 'Daisy Jones & The Six'),
+        (SELECT id FROM genre WHERE title LIKE 'Fiction'));
 
 INSERT INTO book_has_genre (book_idbook, genre_idgenre)
-VALUES ((SELECT idbook FROM book WHERE title LIKE 'Daisy Jones & The Six'),
-        (SELECT idgenre FROM genre WHERE title LIKE 'Romance'));
+VALUES ((SELECT id FROM book WHERE title LIKE 'Daisy Jones & The Six'),
+        (SELECT id FROM genre WHERE title LIKE 'Romance'));
 
 INSERT INTO book_has_genre (book_idbook, genre_idgenre)
-VALUES ((SELECT idbook FROM book WHERE title LIKE 'Daisy Jones & The Six'),
-        (SELECT idgenre FROM genre WHERE title LIKE 'Historical Fiction'));
+VALUES ((SELECT id FROM book WHERE title LIKE 'Daisy Jones & The Six'),
+        (SELECT id FROM genre WHERE title LIKE 'Historical Fiction'));
 INSERT INTO book_has_genre (book_idbook, genre_idgenre)
-VALUES ((SELECT idbook FROM book WHERE title LIKE 'Daisy Jones & The Six'),
-        (SELECT idgenre FROM genre WHERE title LIKE 'Contemporary'));
+VALUES ((SELECT id FROM book WHERE title LIKE 'Daisy Jones & The Six'),
+        (SELECT id FROM genre WHERE title LIKE 'Contemporary'));
 
 INSERT INTO author_has_book (author_idauthor, book_idbook)
-VALUES ((Select idauthor from author where name LIKE 'Taylor Jenkins Reid'),
-        (SELECT idbook FROM book WHERE title LIKE 'Daisy Jones & The Six')
+VALUES ((Select id from author where name LIKE 'Taylor Jenkins Reid'),
+        (SELECT id FROM book WHERE title LIKE 'Daisy Jones & The Six')
         );

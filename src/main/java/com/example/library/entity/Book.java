@@ -18,7 +18,7 @@ public class Book {
     private String title;
 
     @Column(name = "rating")
-    private int rating;
+    private Integer rating;
 
 
     @Column(name = "date_published")
@@ -80,11 +80,11 @@ public class Book {
         this.title = title;
     }
 
-    public int getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 
