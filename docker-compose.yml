@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  postgresqldb:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=13121989
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=library
+    ports:
+      - 5434:5432
+    volumes:
+      - db:/var/lib/postgresql
+
+  app:
+    depends_on:
+      - postgresqldb
+    container_name: library
+    build: ./
+    restart: on-failure
+    ports:
+      - 8085:8085
+    environment:
+      SPRING_APPLICATION_JSON: '{
+       "spring.datasource.url"  : "jdbc:postgresql://postgresqldb:5432/library?useSSL=false",
+       "spring.datasource.username" : "postgres",
+       "spring.datasource.password" : "13121989",
+       "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.PostgreSQLDialect",
+       "spring.jpa.hibernate.ddl-auto" : "update"
+     }'
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+
+volumes:
+  db:
