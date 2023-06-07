@@ -14,6 +14,7 @@ services:
       - db:/var/lib/postgresql
 
   app:
+    image: 'docker-spring-boot-postgres:latest'
     depends_on:
       - postgresqldb
     container_name: library
