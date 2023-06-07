@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
@@ -23,25 +24,24 @@ public class Review {
     private String content;
 
     @Column(name = "timeadded")
-    private Date timeAdded;
+    private Timestamp timeAdded;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "book_idbook", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    protected Book book;
-
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
-    protected Set<Comment> comments = new HashSet<>();
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "book_idbook", nullable = false)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    protected Book book;
+//
+//    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+//    protected Set<Comment> comments = new HashSet<>();
 
 
     public Review() {
     }
 
-    public Review(int rating, String content, Date timeAdded, Book book) {
+    public Review(int rating, String content, Timestamp timeAdded) {
         this.rating = rating;
         this.content = content;
         this.timeAdded = timeAdded;
-        this.book = book;
     }
 
     public long getId() {
@@ -68,29 +68,29 @@ public class Review {
         this.content = content;
     }
 
-    public Date getTimeAdded() {
+    public Timestamp getTimeAdded() {
         return timeAdded;
     }
 
-    public void setTimeAdded(Date timeAdded) {
+    public void setTimeAdded(Timestamp timeAdded) {
         this.timeAdded = timeAdded;
     }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
-    public Set<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(Set<Comment> comments) {
-        this.comments = comments;
-    }
+//
+//    public Book getBook() {
+//        return book;
+//    }
+//
+//    public void setBook(Book book) {
+//        this.book = book;
+//    }
+//
+//    public Set<Comment> getComments() {
+//        return comments;
+//    }
+//
+//    public void setComments(Set<Comment> comments) {
+//        this.comments = comments;
+//    }
 
     @Override
     public String toString() {
@@ -99,7 +99,6 @@ public class Review {
                 ", rating=" + rating +
                 ", content='" + content + '\'' +
                 ", timeAdded=" + timeAdded +
-                ", book=" + book +
                 '}';
     }
 

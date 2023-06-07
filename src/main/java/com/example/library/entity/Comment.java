@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
@@ -21,20 +22,19 @@ public class Comment {
     private String content;
 
     @Column(name = "timeadded")
-    private Date timeAdded;
+    private Timestamp timeAdded;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "review_idreview", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    protected Review review;
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "review_idreview", nullable = false)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    protected Review review;
 
     public Comment() {
     }
 
-    public Comment(String content, Date timeAdded, Review review) {
+    public Comment(String content, Timestamp timeAdded) {
         this.content = content;
         this.timeAdded = timeAdded;
-        this.review = review;
     }
 
     public long getId() {
@@ -53,21 +53,21 @@ public class Comment {
         this.content = content;
     }
 
-    public Date getTimeAdded() {
+    public Timestamp getTimeAdded() {
         return timeAdded;
     }
 
-    public void setTimeAdded(Date timeAdded) {
+    public void setTimeAdded(Timestamp timeAdded) {
         this.timeAdded = timeAdded;
     }
 
-    public Review getReview() {
-        return review;
-    }
-
-    public void setReview(Review review) {
-        this.review = review;
-    }
+//    public Review getReview() {
+//        return review;
+//    }
+//
+//    public void setReview(Review review) {
+//        this.review = review;
+//    }
 
     @Override
     public String toString() {
@@ -75,7 +75,6 @@ public class Comment {
                 "id=" + id +
                 ", content='" + content + '\'' +
                 ", timeAdded=" + timeAdded +
-                ", review=" + review +
                 '}';
     }
     @Override

@@ -16,15 +16,14 @@ public class Genre {
     @Column(name = "title")
     private String title;
 
-    @ManyToMany(mappedBy = "genres")
-    protected Set<Book> books = new HashSet<>();
+//    @ManyToMany(mappedBy = "genres")
+//    protected Set<Book> books = new HashSet<>();
 
     public Genre() {
     }
 
-    public Genre(String title, Set<Book> books) {
+    public Genre(String title) {
         this.title = title;
-        this.books = books;
     }
 
     public long getId() {
@@ -42,22 +41,20 @@ public class Genre {
     public void setTitle(String title) {
         this.title = title;
     }
-
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
-    }
+//
+//    public Set<Book> getBooks() {
+//        return books;
+//    }
+//
+//    public void setBooks(Set<Book> books) {
+//        this.books = books;
+//    }
 
     @Override
     public String toString() {
         return "Genre{" +
                 "id=" + id +
-                ", title='" + title + '\'' +
-                ", books=" + books +
-                '}';
+                ", title='" + title + '}';
     }
     @Override
     public boolean equals(Object o) {
