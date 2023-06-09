@@ -2,10 +2,9 @@ package com.example.library.entity;
 
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
 import java.time.Year;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "book")
@@ -22,7 +21,7 @@ public class Book {
 
 
     @Column(name = "date_published")
-    private Year yearPublished;
+    private Timestamp datePublished;
 
     @Column(name = "description", length = 10000)
     private String description;
@@ -56,10 +55,10 @@ public class Book {
     public Book() {
     }
 
-    public Book(long id, String title, Year yearPublished, String description, String cover) {
+    public Book(long id, String title, Timestamp yearPublished, String description, String cover) {
         this.id = id;
         this.title = title;
-        this.yearPublished = yearPublished;
+        this.datePublished = yearPublished;
         this.description = description;
         this.cover = cover;
     }
@@ -88,12 +87,12 @@ public class Book {
         this.rating = rating;
     }
 
-    public Year getYearPublished() {
-        return yearPublished;
+    public Timestamp getDatePublished() {
+        return datePublished;
     }
 
-    public void setYearPublished(Year date_published) {
-        this.yearPublished = date_published;
+    public void setDatePublished(Timestamp date_published) {
+        this.datePublished = date_published;
     }
 
     public String getDescription() {
@@ -139,7 +138,7 @@ public class Book {
     @Override
     public String toString() {
         return "Book [id=" + id + ", title=" + title +
-                ", desc=" + description + ", date_published=" + yearPublished +
+                ", desc=" + description + ", date_published=" + datePublished +
                 ", cover =" + cover + ", rating=" + rating + "]";
     }
 

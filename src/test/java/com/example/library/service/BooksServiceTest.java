@@ -2,13 +2,14 @@ package com.example.library.service;
 
 import com.example.library.entity.Book;
 import com.example.library.repository.BooksRepository;
+import com.example.library.service.Implement.BooksService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.time.Year;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -52,8 +53,8 @@ class BooksServiceTest {
     @Test
     void testGetAll() {
 
-        Book book1 = new Book(1L, "Title 1", Year.of(2022), "Description 1", "Cover 1");
-        Book book2 = new Book(2L, "Title 2", Year.of(2023), "Description 2", "Cover 2");
+        Book book1 = new Book(1L, "Title 1", new Timestamp(System.currentTimeMillis()), "Description 1", "Cover 1");
+        Book book2 = new Book(2L, "Title 2", new Timestamp(System.currentTimeMillis()), "Description 2", "Cover 2");
         List<Book> books = Arrays.asList(book1, book2);
 
         when(booksRepository.findAll()).thenReturn(books);
@@ -87,7 +88,7 @@ class BooksServiceTest {
 
         Mockito.when(booksRepository.findById(1L)).thenReturn(Optional.of(sampleBook));
 
-        booksService.delete(1L);
+        booksService.deleteById(1L);
 
         Mockito.verify(booksRepository, Mockito.times(1)).deleteById(1L);
     }

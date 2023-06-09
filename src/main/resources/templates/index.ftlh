@@ -44,8 +44,8 @@
         <thead>
         <tr>
             <th>Title</th>
-            <th>Author</th>
-            <th>Genre</th>
+            <th>Description</th>
+<#--            <th>Genre</th>-->
             <th>Publication Year</th>
         </tr>
         </thead>
@@ -53,9 +53,13 @@
         <#list booksList as book>
             <tr>
                 <td>${book.title}</td>
-                <td>${book.author}</td>
-                <td>${book.genre}</td>
-                <td>${book.publicationYear}</td>
+                <td>${book.description}</td>
+<#--                <td>${book.genre}</td>-->
+                <td>
+                    <#if book.datePublished?has_content>
+                        ${book.datePublished?datetime}
+                    </#if>
+                </td>
             </tr>
         </#list>
         </tbody>

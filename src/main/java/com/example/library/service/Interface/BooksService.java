@@ -1,4 +1,4 @@
-package com.example.library.service;
+package com.example.library.service.Interface;
 
 import com.example.library.entity.Book;
 import com.example.library.repository.BooksRepository;
@@ -6,14 +6,14 @@ import com.example.library.repository.BooksRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface BooksServiceInterface {
+public interface BooksService {
     void setBooksRepository(BooksRepository booksRepository);
 
     Optional<Book> findById(long id);
 
     List<Book> getAll();
 
-    void save(Book book);
+    Book save(Book book);
 
-    void delete(long id);
+    void deleteById(long id);
 }

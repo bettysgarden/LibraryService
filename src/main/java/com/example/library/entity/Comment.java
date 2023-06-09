@@ -32,6 +32,12 @@ public class Comment {
     public Comment() {
     }
 
+    public Comment(long id, String content, Timestamp timeAdded) {
+        this.id = id;
+        this.content = content;
+        this.timeAdded = timeAdded;
+    }
+
     public Comment(String content, Timestamp timeAdded) {
         this.content = content;
         this.timeAdded = timeAdded;

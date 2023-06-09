@@ -35,6 +35,13 @@ public class Review {
 //    protected Set<Comment> comments = new HashSet<>();
 
 
+    public Review(long id, int rating, String content, Timestamp timeAdded) {
+        this.id = id;
+        this.rating = rating;
+        this.content = content;
+        this.timeAdded = timeAdded;
+    }
+
     public Review() {
     }
 
