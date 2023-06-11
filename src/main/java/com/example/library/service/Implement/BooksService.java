@@ -25,25 +25,44 @@ public class BooksService implements com.example.library.service.Interface.Books
     @Override
     public Optional<Book> findById(long id) {
         logger.debug("inside findById() method");
-        return booksRepository.findById(id);
+        try {
+            return booksRepository.findById(id);
+        } catch (Exception e) {
+            logger.error("Error occurred while finding book by ID: {}", id, e);
+            throw e;
+        }
     }
 
     @Override
     public List<Book> getAll() {
         logger.debug("inside getAll() method");
-        return booksRepository.findAll();
+        try {
+            return booksRepository.findAll();
+        } catch (Exception e) {
+            logger.error("Error occurred while retrieving all books", e);
+            throw e;
+        }
     }
 
     @Override
     public Book save(Book book) {
         logger.debug("inside save() method");
-        booksRepository.save(book);
-        return book;
+        try {
+            return booksRepository.save(book);
+        } catch (Exception e) {
+            logger.error("Error occurred while saving book: {}", book, e);
+            throw e;
+        }
     }
 
     @Override
     public void deleteById(long id) {
         logger.debug("inside delete() method");
-        booksRepository.deleteById(id);
+        try {
+            booksRepository.deleteById(id);
+        } catch (Exception e) {
+            logger.error("Error occurred while deleting book by ID: {}", id, e);
+            throw e;
+        }
     }
 }
