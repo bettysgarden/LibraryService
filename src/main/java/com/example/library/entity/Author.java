@@ -22,16 +22,16 @@ public class Author {
     @Column(name = "description", length = 10000)
     private String description;
 
-//    // the owning side
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {
-//                    CascadeType.PERSIST,
-//                    CascadeType.MERGE
-//            })
-//    @JoinTable(name = "author_has_book",
-//            joinColumns = {@JoinColumn(name = "author_idauthor")},
-//            inverseJoinColumns = {@JoinColumn(name = "book_idbook")})
-//    private Set<Book> books = new HashSet<>();
+    // the owning side
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "author_has_book",
+            joinColumns = {@JoinColumn(name = "author_idauthor")},
+            inverseJoinColumns = {@JoinColumn(name = "book_idbook")})
+    private Set<Book> books = new HashSet<>();
 
     public Author(long id, String name, String website, String description) {
         this.id = id;
@@ -80,14 +80,14 @@ public class Author {
     public void setDescription(String description) {
         this.description = description;
     }
-//
-//    public Set<Book> getBooks() {
-//        return books;
-//    }
-//
-//    public void setBooks(Set<Book> books) {
-//        this.books = books;
-//    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
+    }
     @Override
     public String toString() {
         return "Tutorial [id=" + id + ", name=" + name +

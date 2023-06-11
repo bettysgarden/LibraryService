@@ -26,13 +26,13 @@ public class Review {
     @Column(name = "timeadded")
     private Timestamp timeAdded;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "book_idbook", nullable = false)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    protected Book book;
-//
-//    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
-//    protected Set<Comment> comments = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "book_idbook", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    protected Book book;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    protected Set<Comment> comments = new HashSet<>();
 
 
     public Review(long id, int rating, String content, Timestamp timeAdded) {
@@ -82,22 +82,22 @@ public class Review {
     public void setTimeAdded(Timestamp timeAdded) {
         this.timeAdded = timeAdded;
     }
-//
-//    public Book getBook() {
-//        return book;
-//    }
-//
-//    public void setBook(Book book) {
-//        this.book = book;
-//    }
-//
-//    public Set<Comment> getComments() {
-//        return comments;
-//    }
-//
-//    public void setComments(Set<Comment> comments) {
-//        this.comments = comments;
-//    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
 
     @Override
     public String toString() {

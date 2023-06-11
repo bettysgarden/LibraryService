@@ -1,5 +1,6 @@
 package com.example.library.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -16,8 +17,14 @@ public class Genre {
     @Column(name = "title")
     private String title;
 
-//    @ManyToMany(mappedBy = "genres")
-//    protected Set<Book> books = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "genres")
+    @JsonIgnore
+    protected Set<Book> books = new HashSet<>();
 
     public Genre() {
     }
@@ -46,14 +53,14 @@ public class Genre {
     public void setTitle(String title) {
         this.title = title;
     }
-//
-//    public Set<Book> getBooks() {
-//        return books;
-//    }
-//
-//    public void setBooks(Set<Book> books) {
-//        this.books = books;
-//    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
+    }
 
     @Override
     public String toString() {

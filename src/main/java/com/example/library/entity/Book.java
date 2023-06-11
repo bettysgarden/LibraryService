@@ -1,10 +1,13 @@
 package com.example.library.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.time.Year;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "book")
@@ -29,28 +32,29 @@ public class Book {
     @Column(name = "cover")
     private String cover;
 
-    // the non-owning (inverse side)
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {
-//                    CascadeType.PERSIST,
-//                    CascadeType.MERGE
-//            },
-//            mappedBy = "books")
-//    private Set<Author> authors = new HashSet<>();
-//
-//    // the owning side
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {
-//                    CascadeType.PERSIST,
-//                    CascadeType.MERGE
-//            })
-//    @JoinTable(name = "book_has_genre",
-//            joinColumns = {@JoinColumn(name = "book_idbook")},
-//            inverseJoinColumns = {@JoinColumn(name = "genre_idgenre")})
-//    private Set<Genre> genres = new HashSet<>();
+//     the non-owning (inverse side)
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "books")
+    @JsonIgnore
+    private Set<Author> authors = new HashSet<>();
 
-//    @OneToMany(mappedBy = "book")
-//    private Set<Review> reviews = new HashSet<>();
+    // the owning side
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "book_has_genre",
+            joinColumns = {@JoinColumn(name = "book_idbook")},
+            inverseJoinColumns = {@JoinColumn(name = "genre_idgenre")})
+    private Set<Genre> genres = new HashSet<>();
+
+    @OneToMany(mappedBy = "book")
+    private Set<Review> reviews = new HashSet<>();
 
     public Book() {
     }
@@ -106,30 +110,30 @@ public class Book {
     public String getCover() {
         return cover;
     }
-//
-//    public Set<Author> getAuthors() {
-//        return authors;
-//    }
-//
-//    public void setAuthors(Set<Author> authors) {
-//        this.authors = authors;
-//    }
-//
-//    public Set<Genre> getGenres() {
-//        return genres;
-//    }
-//
-//    public void setGenres(Set<Genre> genres) {
-//        this.genres = genres;
-//    }
 
-//    public Set<Review> getReviews() {
-//        return reviews;
-//    }
-//
-//    public void setReviews(Set<Review> reviews) {
-//        this.reviews = reviews;
-//    }
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
+    }
+
+    public Set<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
+    }
+
+    public Set<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
+    }
 
     public void setCover(String cover) {
         this.cover = cover;

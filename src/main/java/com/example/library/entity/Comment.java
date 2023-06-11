@@ -24,10 +24,10 @@ public class Comment {
     @Column(name = "timeadded")
     private Timestamp timeAdded;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "review_idreview", nullable = false)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    protected Review review;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "review_idreview", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    protected Review review;
 
     public Comment() {
     }
@@ -67,13 +67,13 @@ public class Comment {
         this.timeAdded = timeAdded;
     }
 
-//    public Review getReview() {
-//        return review;
-//    }
-//
-//    public void setReview(Review review) {
-//        this.review = review;
-//    }
+    public Review getReview() {
+        return review;
+    }
+
+    public void setReview(Review review) {
+        this.review = review;
+    }
 
     @Override
     public String toString() {
