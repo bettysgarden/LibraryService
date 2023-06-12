@@ -5,29 +5,30 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "comment")
-
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
 
-    @Column(name = "content")
+    @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "timeadded")
+    @Column(name = "timeadded", nullable = false)
     private Timestamp timeAdded;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "review_idreview", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     protected Review review;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_iduser", nullable = false)
+    private User user;
 
     public Comment() {
     }
@@ -75,6 +76,14 @@ public class Comment {
         this.review = review;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Comment{" +
@@ -83,6 +92,7 @@ public class Comment {
                 ", timeAdded=" + timeAdded +
                 '}';
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -95,5 +105,4 @@ public class Comment {
     public int hashCode() {
         return Objects.hash(id, content, timeAdded);
     }
-
 }

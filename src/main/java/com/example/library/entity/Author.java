@@ -11,9 +11,10 @@ import java.util.Set;
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "website")
@@ -32,13 +33,6 @@ public class Author {
             joinColumns = {@JoinColumn(name = "author_idauthor")},
             inverseJoinColumns = {@JoinColumn(name = "book_idbook")})
     private Set<Book> books = new HashSet<>();
-
-    public Author(long id, String name, String website, String description) {
-        this.id = id;
-        this.name = name;
-        this.website = website;
-        this.description = description;
-    }
 
     public Author() {
     }
@@ -88,11 +82,13 @@ public class Author {
     public void setBooks(Set<Book> books) {
         this.books = books;
     }
+
     @Override
     public String toString() {
-        return "Tutorial [id=" + id + ", name=" + name +
-                ", desc=" + description + ", website=" + website + "]";
+        return "Author [id=" + id + ", name=" + name +
+                ", description=" + description + ", website=" + website + "]";
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -105,5 +101,4 @@ public class Author {
     public int hashCode() {
         return Objects.hash(id, name);
     }
-
 }

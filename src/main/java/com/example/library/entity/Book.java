@@ -2,6 +2,8 @@ package com.example.library.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.sql.Timestamp;
 import java.time.Year;
@@ -14,25 +16,25 @@ import java.util.Set;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "rating")
+    @Column(name = "rating", columnDefinition = "integer default 0")
     private Integer rating;
 
-
-    @Column(name = "date_published")
-    private Timestamp datePublished;
+    @Column(name = "year_published")
+    private Integer yearPublished;
 
     @Column(name = "description", length = 10000)
     private String description;
 
-    @Column(name = "cover")
-    private String cover;
+    @Column(name = "cover_url")
+    private String coverUrl;
 
-//     the non-owning (inverse side)
+    // the non-owning (inverse side)
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
@@ -53,18 +55,30 @@ public class Book {
             inverseJoinColumns = {@JoinColumn(name = "genre_idgenre")})
     private Set<Genre> genres = new HashSet<>();
 
+    public Book(long id, String title, Integer yearPublished, String description, String coverUrl) {
+        this.id = id;
+        this.title = title;
+        this.yearPublished = yearPublished;
+        this.description = description;
+        this.coverUrl = coverUrl;
+    }
+
     @OneToMany(mappedBy = "book")
     private Set<Review> reviews = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "publisher_idpublisher", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    protected Publisher publisher;
 
     public Book() {
     }
 
-    public Book(long id, String title, Timestamp yearPublished, String description, String cover) {
-        this.id = id;
+    public Book(String title, Integer yearPublished, String description, String coverUrl) {
         this.title = title;
-        this.datePublished = yearPublished;
+        this.yearPublished = yearPublished;
         this.description = description;
-        this.cover = cover;
+        this.coverUrl = coverUrl;
     }
 
     public long getId() {
@@ -91,12 +105,12 @@ public class Book {
         this.rating = rating;
     }
 
-    public Timestamp getDatePublished() {
-        return datePublished;
+    public Integer getYearPublished() {
+        return yearPublished;
     }
 
-    public void setDatePublished(Timestamp date_published) {
-        this.datePublished = date_published;
+    public void setYearPublished(Integer yearPublished) {
+        this.yearPublished = yearPublished;
     }
 
     public String getDescription() {
@@ -107,8 +121,12 @@ public class Book {
         this.description = description;
     }
 
-    public String getCover() {
-        return cover;
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 
     public Set<Author> getAuthors() {
@@ -135,15 +153,19 @@ public class Book {
         this.reviews = reviews;
     }
 
-    public void setCover(String cover) {
-        this.cover = cover;
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
     }
 
     @Override
     public String toString() {
         return "Book [id=" + id + ", title=" + title +
-                ", desc=" + description + ", date_published=" + datePublished +
-                ", cover =" + cover + ", rating=" + rating + "]";
+                ", description=" + description + ", yearPublished=" + yearPublished +
+                ", coverUrl=" + coverUrl + ", rating=" + rating + "]";
     }
 
     @Override
@@ -159,4 +181,3 @@ public class Book {
         return Objects.hash(id, title);
     }
 }
-

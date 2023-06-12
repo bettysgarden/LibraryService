@@ -5,7 +5,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -17,35 +16,32 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "rating")
-    private int rating;
+    @Column(name = "rating", nullable = false)
+    private Integer rating;
 
     @Column(name = "content")
     private String content;
 
-    @Column(name = "timeadded")
+    @Column(name = "timeadded", nullable = false)
     private Timestamp timeAdded;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "book_idbook", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    protected Book book;
+    private Book book;
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
-    protected Set<Comment> comments = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_iduser", nullable = false)
+    private User user;
 
-
-    public Review(long id, int rating, String content, Timestamp timeAdded) {
-        this.id = id;
-        this.rating = rating;
-        this.content = content;
-        this.timeAdded = timeAdded;
-    }
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> comments = new HashSet<>();
 
     public Review() {
     }
 
-    public Review(int rating, String content, Timestamp timeAdded) {
+    public Review(long id, Integer rating, String content, Timestamp timeAdded) {
+        this.id = id;
         this.rating = rating;
         this.content = content;
         this.timeAdded = timeAdded;
@@ -59,11 +55,11 @@ public class Review {
         this.id = id;
     }
 
-    public int getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 
@@ -91,6 +87,14 @@ public class Review {
         this.book = book;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Set<Comment> getComments() {
         return comments;
     }
@@ -114,12 +118,11 @@ public class Review {
         if (this == o) return true;
         if (!(o instanceof Review)) return false;
         Review review = (Review) o;
-        return id == review.id && rating == review.rating && Objects.equals(content, review.content) && Objects.equals(timeAdded, review.timeAdded);
+        return id == review.id && Objects.equals(rating, review.rating) && Objects.equals(content, review.content) && Objects.equals(timeAdded, review.timeAdded);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, rating, content, timeAdded);
     }
-
 }
