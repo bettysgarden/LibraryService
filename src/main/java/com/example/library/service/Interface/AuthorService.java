@@ -13,7 +13,7 @@ public interface AuthorService {
 
     List<Author> getAll();
 
-    void save(Author author);
+    Author save(Author author);
 
     void deleteById(long id);
 }

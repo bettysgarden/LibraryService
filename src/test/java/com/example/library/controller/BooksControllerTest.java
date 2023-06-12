@@ -6,10 +6,13 @@ import com.example.library.service.Implement.BooksService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,9 +20,12 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class BooksControllerTest {
-
+    private MockMvc mockMvc;
+    @InjectMocks
     private BooksController booksController;
 
     @Mock
@@ -27,8 +33,9 @@ class BooksControllerTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        MockitoAnnotations.initMocks(this);
         booksController = new BooksController(booksService);
+        mockMvc = MockMvcBuilders.standaloneSetup(booksController).build();
     }
 
     @Test
@@ -47,6 +54,19 @@ class BooksControllerTest {
     }
 
     @Test
+    void getBookById_NotFound() throws Exception {
+        Long bookId = 1L;
+
+        when(booksService.findById(bookId)).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/books/{id}", bookId))
+                .andExpect(status().isNotFound());
+
+        verify(booksService, times(1)).findById(bookId);
+        verifyNoMoreInteractions(booksService);
+    }
+
+    @Test
     void testGetBookById() {
         Long bookId = 1L;
         Book book = new Book(1L, "Title 1", 2023, "Description 1", "Cover 1");
@@ -57,19 +77,6 @@ class BooksControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(optionalBook, response.getBody());
-        verify(booksService, times(1)).findById(bookId);
-    }
-
-    @Test
-    @Disabled
-    void testGetBookById_NotFound() {
-        Long bookId = 1L;
-        when(booksService.findById(bookId)).thenReturn(Optional.empty());
-
-        ResponseEntity<Optional<Book>> response = booksController.getBookById(bookId);
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals(Optional.empty(), response.getBody());
         verify(booksService, times(1)).findById(bookId);
     }
 

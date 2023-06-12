@@ -13,7 +13,7 @@ import java.util.*;
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "rating", nullable = false)
     private Integer rating;
@@ -40,18 +40,22 @@ public class Review {
     public Review() {
     }
 
-    public Review(long id, Integer rating, String content, Timestamp timeAdded) {
+    public Review(Integer rating, String content) {
+        this.rating = rating;
+        this.content = content;
+    }
+
+    public Review(Long id, Integer rating, String content) {
         this.id = id;
         this.rating = rating;
         this.content = content;
-        this.timeAdded = timeAdded;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

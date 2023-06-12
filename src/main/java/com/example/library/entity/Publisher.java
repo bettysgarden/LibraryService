@@ -26,10 +26,13 @@ public class Publisher {
     public Publisher() {
     }
 
-    public Publisher(long id, String title, Set<Book> books) {
+    public Publisher(String title) {
+        this.title = title;
+    }
+
+    public Publisher(long id, String title) {
         this.id = id;
         this.title = title;
-        this.books = books;
     }
 
     public long getId() {

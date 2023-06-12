@@ -13,7 +13,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "content", nullable = false)
     private String content;
@@ -33,22 +33,22 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(long id, String content, Timestamp timeAdded) {
+    public Comment(Long id, String content) {
         this.id = id;
         this.content = content;
         this.timeAdded = timeAdded;
     }
 
-    public Comment(String content, Timestamp timeAdded) {
+    public Comment(String content) {
         this.content = content;
         this.timeAdded = timeAdded;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -12,7 +12,7 @@ public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -37,17 +37,23 @@ public class Author {
     public Author() {
     }
 
-    public Author(String name, String website, String description) {
+    public Author(Long id, String name, String website, String description) {
+        this.id = id;
         this.name = name;
         this.website = website;
         this.description = description;
     }
 
-    public long getId() {
+    public Author(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

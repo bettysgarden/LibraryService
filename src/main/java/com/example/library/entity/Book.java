@@ -56,7 +56,6 @@ public class Book {
     private Set<Genre> genres = new HashSet<>();
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
     private Set<Review> reviews = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

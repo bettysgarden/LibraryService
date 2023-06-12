@@ -45,11 +45,10 @@ public class AuthorService implements com.example.library.service.Interface.Auth
         }
     }
 
-    @Override
-    public void save(Author author) {
+    public Author save(Author author) {
         logger.debug("inside save() method");
         try {
-            authorRepository.save(author);
+            return authorRepository.save(author);
         } catch (Exception e) {
             logger.error("Error occurred while saving author: {}", author, e);
             throw e;

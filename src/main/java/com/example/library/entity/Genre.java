@@ -12,7 +12,7 @@ import java.util.Set;
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "title")
     private String title;
@@ -29,7 +29,7 @@ public class Genre {
     public Genre() {
     }
 
-    public Genre(long id, String title) {
+    public Genre(Long id, String title) {
         this.id = id;
         this.title = title;
     }
@@ -38,11 +38,11 @@ public class Genre {
         this.title = title;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
