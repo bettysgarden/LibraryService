@@ -2,20 +2,27 @@ package com.example.library.service.Implement;
 
 import com.example.library.entity.Book;
 import com.example.library.repository.Interface.BooksRepository;
+import com.example.library.repository.Interface.ReviewRepository;
+import com.example.library.service.Interface.BooksService;
+import com.example.library.service.Interface.ReviewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BooksService implements com.example.library.service.Interface.BooksService {
-    private static final Logger logger = LoggerFactory.getLogger(BooksService.class);
+public class BooksServiceImpl implements BooksService {
+    private static final Logger logger = LoggerFactory.getLogger(BooksServiceImpl.class);
 
     @Autowired
     private BooksRepository booksRepository;
+
+    @Autowired
+    private ReviewService reviewService;
 
     @Override
     public void setBooksRepository(BooksRepository booksRepository) {
@@ -26,23 +33,40 @@ public class BooksService implements com.example.library.service.Interface.Books
     public Optional<Book> findById(long id) {
         logger.debug("inside findById() method");
         try {
-            return booksRepository.findById(id);
+            Optional<Book> optionalBook = booksRepository.findById(id);
+            if (optionalBook.isPresent()) {
+                Book book = optionalBook.get();
+                Double averageRating = reviewService.getAverageRatingForBook(book);
+                book.setRating(averageRating);
+                return Optional.of(book);
+            } else {
+                return Optional.empty();
+            }
         } catch (Exception e) {
             logger.error("Error occurred while finding book by ID: {}", id, e);
             throw e;
         }
     }
 
+
+    @Cacheable(value = "books")
     @Override
     public List<Book> getAll() {
         logger.debug("inside getAll() method");
         try {
-            return booksRepository.findAll();
+            List<Book> books = booksRepository.findAll();
+
+            for (Book book : books) {
+                Double averageRating = reviewService.getAverageRatingForBook(book);
+                book.setRating(averageRating);
+            }
+            return books;
         } catch (Exception e) {
             logger.error("Error occurred while retrieving all books", e);
             throw e;
         }
     }
+
 
     @Override
     public Book save(Book book) {
