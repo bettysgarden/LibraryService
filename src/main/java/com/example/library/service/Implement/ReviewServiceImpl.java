@@ -72,14 +72,17 @@ public class ReviewServiceImpl implements com.example.library.service.Interface.
         }
     }
 
-    @Cacheable(value = "averageRating", key = "#book.id")
     @Override
     public Double getAverageRatingForBook(Book book) {
         logger.debug("inside getAverageRatingForBook() method");
-        return reviewRepository.getAverageRatingForBook(book);
+        try {
+            return reviewRepository.getAverageRatingForBook(book);
+        } catch (Exception e) {
+            logger.error("An error occurred while retrieving the average rating for book: " + book.getId(), e);
+            throw e;
+        }
     }
 
-    @CacheEvict(value = "averageRating", key = "#book.id")
     @Override
     public void updateReviewRating(Book book, Double rating) {
         logger.debug("inside updateReviewRating() method");

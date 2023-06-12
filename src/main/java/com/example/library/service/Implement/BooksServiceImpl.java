@@ -36,8 +36,11 @@ public class BooksServiceImpl implements BooksService {
             Optional<Book> optionalBook = booksRepository.findById(id);
             if (optionalBook.isPresent()) {
                 Book book = optionalBook.get();
-                Double averageRating = reviewService.getAverageRatingForBook(book);
-                book.setRating(averageRating);
+                Double averageRating = 0.0;
+                    if (!reviewService.getReviewsForBook(book).isEmpty()){
+                        averageRating = reviewService.getAverageRatingForBook(book);
+                    }
+                    book.setRating(averageRating);
                 return Optional.of(book);
             } else {
                 return Optional.empty();
@@ -55,11 +58,14 @@ public class BooksServiceImpl implements BooksService {
         logger.debug("inside getAll() method");
         try {
             List<Book> books = booksRepository.findAll();
-
+            Double averageRating = 0.0;
             for (Book book : books) {
-                Double averageRating = reviewService.getAverageRatingForBook(book);
+                if (!reviewService.getReviewsForBook(book).isEmpty()){
+                    averageRating = reviewService.getAverageRatingForBook(book);
+                }
                 book.setRating(averageRating);
             }
+
             return books;
         } catch (Exception e) {
             logger.error("Error occurred while retrieving all books", e);
