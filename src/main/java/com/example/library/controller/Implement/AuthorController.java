@@ -1,4 +1,4 @@
-package com.example.library.controller;
+package com.example.library.controller.Implement;
 
 import com.example.library.entity.Author;
 import com.example.library.service.Implement.AuthorService;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/authors")
-public class AuthorController {
+public class AuthorController implements com.example.library.controller.Interface.AuthorController {
     private final AuthorService authorService;
 
     @Autowired
@@ -20,6 +20,7 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<List<Author>> getAllAuthors() {
         try {
@@ -30,6 +31,7 @@ public class AuthorController {
         }
     }
 
+    @Override
     @GetMapping("/{id}")
     public ResponseEntity<Author> getAuthorById(@PathVariable Long id) {
         try {
@@ -40,6 +42,7 @@ public class AuthorController {
         }
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<Author> createAuthor(@RequestBody Author author) {
         try {
@@ -50,10 +53,11 @@ public class AuthorController {
         }
     }
 
+    @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAuthor(@PathVariable Long id) {
         try {
-            authorService.delete(id);
+            authorService.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

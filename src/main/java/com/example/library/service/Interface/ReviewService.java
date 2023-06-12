@@ -1,19 +1,19 @@
 package com.example.library.service.Interface;
 
 import com.example.library.entity.Review;
-import com.example.library.repository.ReviewRepository;
+import com.example.library.repository.Interface.ReviewRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ReviewService {
-    void setreviewRepository(ReviewRepository reviewRepository);
+    void setReviewRepository(ReviewRepository reviewRepository);
 
     Optional<Review> findById(long id);
 
     List<Review> getAll();
 
-    void save(Review review);
+    Review save(Review review);
 
-    void delete(long id);
+    void deleteById(long id);
 }

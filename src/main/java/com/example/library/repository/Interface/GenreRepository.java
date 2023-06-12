@@ -1,4 +1,4 @@
-package com.example.library.repository;
+package com.example.library.repository.Interface;
 
 import com.example.library.entity.Author;
 import com.example.library.entity.Genre;

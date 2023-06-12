@@ -1,7 +1,7 @@
 package com.example.library.service.Implement;
 
 import com.example.library.entity.Author;
-import com.example.library.repository.AuthorRepository;
+import com.example.library.repository.Interface.AuthorRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,23 +26,39 @@ public class AuthorService implements com.example.library.service.Interface.Auth
     @Override
     public Optional<Author> findById(long id) {
         logger.debug("inside findById() method");
-        return authorRepository.findById(id);
+        try {
+            return authorRepository.findById(id);
+        } catch (Exception e) {
+            logger.error("Error occurred while finding book by ID: {}", id, e);
+            throw e;
+        }
     }
 
     @Override
     public List<Author> getAll() {
         logger.debug("inside getAll() method");
-        return authorRepository.findAll();
+        try {
+            return authorRepository.findAll();
+        } catch (Exception e) {
+            logger.error("Error occurred while retrieving all books", e);
+            throw e;
+        }
     }
 
     @Override
     public void save(Author author) {
         logger.debug("inside save() method");
-        authorRepository.save(author);
+        try {
+            authorRepository.save(author);
+        } catch (Exception e) {
+            logger.error("Error occurred while saving author: {}", author, e);
+            throw e;
+        }
     }
 
+
     @Override
-    public void delete(long id) {
+    public void deleteById(long id) {
         logger.debug("inside delete() method");
         try {
             authorRepository.deleteById(id);
@@ -51,4 +67,5 @@ public class AuthorService implements com.example.library.service.Interface.Auth
             throw new RuntimeException("Failed to delete author");
         }
     }
+
 }

@@ -1,7 +1,7 @@
 package com.example.library.service.Interface;
 
 import com.example.library.entity.Author;
-import com.example.library.repository.AuthorRepository;
+import com.example.library.repository.Interface.AuthorRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,5 +15,5 @@ public interface AuthorService {
 
     void save(Author author);
 
-    void delete(long id);
+    void deleteById(long id);
 }

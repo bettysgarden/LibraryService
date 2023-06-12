@@ -1,4 +1,4 @@
-package com.example.library.controller;
+package com.example.library.controller.Implement;
 
 import com.example.library.entity.Book;
 import com.example.library.service.Implement.BooksService;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/books")
-public class BooksController {
+public class BooksController implements com.example.library.controller.Interface.BooksController {
 
     private final BooksService bookService;
     private final Logger logger = LoggerFactory.getLogger(BooksController.class);
@@ -24,6 +24,7 @@ public class BooksController {
         this.bookService = bookService;
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {
         logger.info("Getting all books");
@@ -36,6 +37,7 @@ public class BooksController {
         }
     }
 
+    @Override
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Book>> getBookById(@PathVariable Long id) {
         logger.info("Getting book by ID: {}", id);
@@ -52,6 +54,7 @@ public class BooksController {
         }
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<Book> createBook(@RequestBody Book book) {
         logger.info("Creating a new book: {}", book);
@@ -64,6 +67,7 @@ public class BooksController {
         }
     }
 
+    @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         logger.info("Deleting book with ID: {}", id);

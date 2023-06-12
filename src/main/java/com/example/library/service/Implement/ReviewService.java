@@ -1,7 +1,7 @@
 package com.example.library.service.Implement;
 
 import com.example.library.entity.Review;
-import com.example.library.repository.ReviewRepository;
+import com.example.library.repository.Interface.ReviewRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class ReviewService implements com.example.library.service.Interface.Revi
     private ReviewRepository reviewRepository;
 
     @Override
-    public void setreviewRepository(ReviewRepository reviewRepository) {
+    public void setReviewRepository(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
     }
 
@@ -36,13 +36,14 @@ public class ReviewService implements com.example.library.service.Interface.Revi
     }
 
     @Override
-    public void save(Review review) {
+    public Review save(Review review) {
         logger.debug("inside save() method");
         reviewRepository.save(review);
+        return review;
     }
 
     @Override
-    public void delete(long id) {
+    public void deleteById(long id) {
         logger.debug("inside delete() method");
         reviewRepository.deleteById(id);
     }

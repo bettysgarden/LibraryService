@@ -1,5 +1,6 @@
 package com.example.library.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -19,6 +20,7 @@ public class Publisher {
     private String title;
 
     @OneToMany(mappedBy = "publisher")
+    @JsonIgnore
     private Set<Book> books = new HashSet<>();
 
     public Publisher() {

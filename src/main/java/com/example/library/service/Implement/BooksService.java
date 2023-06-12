@@ -1,7 +1,7 @@
 package com.example.library.service.Implement;
 
 import com.example.library.entity.Book;
-import com.example.library.repository.BooksRepository;
+import com.example.library.repository.Interface.BooksRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

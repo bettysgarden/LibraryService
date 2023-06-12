@@ -55,26 +55,28 @@ public class Book {
             inverseJoinColumns = {@JoinColumn(name = "genre_idgenre")})
     private Set<Genre> genres = new HashSet<>();
 
-    public Book(long id, String title, Integer yearPublished, String description, String coverUrl) {
-        this.id = id;
-        this.title = title;
-        this.yearPublished = yearPublished;
-        this.description = description;
-        this.coverUrl = coverUrl;
-    }
-
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<Review> reviews = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "publisher_idpublisher", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     protected Publisher publisher;
 
     public Book() {
     }
 
     public Book(String title, Integer yearPublished, String description, String coverUrl) {
+        this.title = title;
+        this.yearPublished = yearPublished;
+        this.description = description;
+        this.coverUrl = coverUrl;
+    }
+
+    public Book(long id, String title, Integer yearPublished, String description, String coverUrl) {
+        this.id = id;
         this.title = title;
         this.yearPublished = yearPublished;
         this.description = description;

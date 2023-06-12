@@ -1,7 +1,7 @@
 package com.example.library.service.Interface;
 
 import com.example.library.entity.Comment;
-import com.example.library.repository.CommentRepository;
+import com.example.library.repository.Interface.CommentRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +13,7 @@ public interface CommentService {
 
     List<Comment> getAll();
 
-    void save(Comment comment);
+    Comment save(Comment comment);
 
-    void delete(long id);
+    void deleteById(long id);
 }

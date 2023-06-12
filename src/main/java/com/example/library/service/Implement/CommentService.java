@@ -1,7 +1,7 @@
 package com.example.library.service.Implement;
 
 import com.example.library.entity.Comment;
-import com.example.library.repository.CommentRepository;
+import com.example.library.repository.Interface.CommentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +35,14 @@ public class CommentService implements com.example.library.service.Interface.Com
     }
 
     @Override
-    public void save(Comment comment) {
+    public Comment save(Comment comment) {
         logger.debug("inside save() method");
         commentRepository.save(comment);
+        return comment;
     }
 
     @Override
-    public void delete(long id) {
+    public void deleteById(long id) {
         logger.debug("inside delete() method");
         commentRepository.deleteById(id);
     }
