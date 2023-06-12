@@ -2,7 +2,7 @@ package com.example.library.service;
 
 import com.example.library.entity.User;
 import com.example.library.repository.Interface.UserRepository;
-import com.example.library.service.Implement.UserService;
+import com.example.library.service.Implement.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class UserServiceTest {
+class UserServiceImplTest {
     @Mock
     private UserRepository userRepository;
 
     @InjectMocks
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @BeforeEach
     void setUp() {
@@ -37,7 +37,7 @@ class UserServiceTest {
 
         when(userRepository.findById(userId)).thenReturn(optionalUser);
 
-        Optional<User> result = userService.findById(userId);
+        Optional<User> result = userServiceImpl.findById(userId);
 
         assertEquals(optionalUser, result);
         verify(userRepository, times(1)).findById(userId);
@@ -52,7 +52,7 @@ class UserServiceTest {
 
         when(userRepository.findAll()).thenReturn(users);
 
-        List<User> result = userService.getAll();
+        List<User> result = userServiceImpl.getAll();
 
         assertEquals(users, result);
         verify(userRepository, times(1)).findAll();
@@ -65,7 +65,7 @@ class UserServiceTest {
 
         when(userRepository.save(any(User.class))).thenReturn(user);
 
-        User result = userService.save(user);
+        User result = userServiceImpl.save(user);
 
         assertEquals(user, result);
         verify(userRepository, times(1)).save(user);
@@ -78,7 +78,7 @@ class UserServiceTest {
 
         doNothing().when(userRepository).deleteById(userId);
 
-        userService.deleteById(userId);
+        userServiceImpl.deleteById(userId);
 
         verify(userRepository, times(1)).deleteById(userId);
         verifyNoMoreInteractions(userRepository);

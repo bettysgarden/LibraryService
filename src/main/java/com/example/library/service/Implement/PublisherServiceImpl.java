@@ -3,6 +3,7 @@ package com.example.library.service.Implement;
 
 import com.example.library.entity.Publisher;
 import com.example.library.repository.Interface.PublisherRepository;
+import com.example.library.service.Interface.PublisherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PublisherService implements com.example.library.service.Interface.PublisherService {
-    private static final Logger logger = LoggerFactory.getLogger(PublisherService.class);
+public class PublisherServiceImpl implements PublisherService {
+    private static final Logger logger = LoggerFactory.getLogger(PublisherServiceImpl.class);
 
     @Autowired
     private PublisherRepository publisherRepository;

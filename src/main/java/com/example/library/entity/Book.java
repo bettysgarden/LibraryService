@@ -17,13 +17,13 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "title", nullable = false)
     private String title;
 
     @Column(name = "rating", columnDefinition = "integer default 0")
-    private Integer rating;
+    private Double rating;
 
     @Column(name = "year_published")
     private Integer yearPublished;
@@ -74,7 +74,7 @@ public class Book {
         this.coverUrl = coverUrl;
     }
 
-    public Book(long id, String title, Integer yearPublished, String description, String coverUrl) {
+    public Book(Long id, String title, Integer yearPublished, String description, String coverUrl) {
         this.id = id;
         this.title = title;
         this.yearPublished = yearPublished;
@@ -82,11 +82,11 @@ public class Book {
         this.coverUrl = coverUrl;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -98,11 +98,11 @@ public class Book {
         this.title = title;
     }
 
-    public Integer getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 

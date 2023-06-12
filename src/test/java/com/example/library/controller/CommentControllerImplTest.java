@@ -1,7 +1,7 @@
 package com.example.library.controller;
 
-import com.example.library.controller.Implement.CommentController;
-import com.example.library.service.Implement.CommentService;
+import com.example.library.controller.Implement.CommentControllerImpl;
+import com.example.library.service.Implement.CommentServiceImpl;
 import org.junit.jupiter.api.Test;
 import com.example.library.entity.Comment;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,18 +21,18 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class CommentControllerTest {
+class CommentControllerImplTest {
     private MockMvc mockMvc;
     @Mock
-    private CommentService commentService;
+    private CommentServiceImpl commentServiceImpl;
     @InjectMocks
-    private CommentController commentController;
+    private CommentControllerImpl commentControllerImpl;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        commentController = new CommentController(commentService);
-        mockMvc = MockMvcBuilders.standaloneSetup(commentController).build();
+        commentControllerImpl = new CommentControllerImpl(commentServiceImpl);
+        mockMvc = MockMvcBuilders.standaloneSetup(commentControllerImpl).build();
     }
 
     @Test
@@ -41,7 +41,7 @@ class CommentControllerTest {
         List<Comment> comments = new ArrayList<>();
         comments.add(new Comment(1L, "Nice book!"));
         comments.add(new Comment(2L, "I enjoyed reading it."));
-        when(commentService.getAll()).thenReturn(comments);
+        when(commentServiceImpl.getAll()).thenReturn(comments);
 
         // Execute and Verify
         mockMvc.perform(get("/api/comments"))
@@ -52,7 +52,7 @@ class CommentControllerTest {
                 .andExpect(jsonPath("$[0].content").value("Nice book!"))
                 .andExpect(jsonPath("$[1].id").value(2))
                 .andExpect(jsonPath("$[1].content").value("I enjoyed reading it."));
-        verify(commentService, times(1)).getAll();
+        verify(commentServiceImpl, times(1)).getAll();
     }
 
     @Test
@@ -60,7 +60,7 @@ class CommentControllerTest {
         // Prepare
         long commentId = 1;
         Comment comment = new Comment(commentId, "Nice book!");
-        when(commentService.findById(commentId)).thenReturn(Optional.of(comment));
+        when(commentServiceImpl.findById(commentId)).thenReturn(Optional.of(comment));
 
         // Execute and Verify
         mockMvc.perform(get("/api/comments/{id}", commentId))
@@ -68,19 +68,19 @@ class CommentControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(commentId))
                 .andExpect(jsonPath("$.content").value("Nice book!"));
-        verify(commentService, times(1)).findById(commentId);
+        verify(commentServiceImpl, times(1)).findById(commentId);
     }
 
     @Test
     void testGetCommentById_NonExistingId() throws Exception {
         // Prepare
         long commentId = 100;
-        when(commentService.findById(commentId)).thenReturn(Optional.empty());
+        when(commentServiceImpl.findById(commentId)).thenReturn(Optional.empty());
 
         // Execute and Verify
         mockMvc.perform(get("/api/comments/{id}", commentId))
                 .andExpect(status().isNotFound());
-        verify(commentService, times(1)).findById(commentId);
+        verify(commentServiceImpl, times(1)).findById(commentId);
     }
 
     @Test
@@ -88,7 +88,7 @@ class CommentControllerTest {
         // Prepare
         Comment comment = new Comment(null, "Nice book!");
         Comment createdComment = new Comment(1L, "Nice book!");
-        when(commentService.save(any(Comment.class))).thenReturn(createdComment);
+        when(commentServiceImpl.save(any(Comment.class))).thenReturn(createdComment);
 
         // Execute and Verify
         mockMvc.perform(post("/api/comments")
@@ -98,7 +98,7 @@ class CommentControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.content").value("Nice book!"));
-        verify(commentService, times(1)).save(any(Comment.class));
+        verify(commentServiceImpl, times(1)).save(any(Comment.class));
     }
 
     @Test
@@ -109,18 +109,18 @@ class CommentControllerTest {
         // Execute and Verify
         mockMvc.perform(delete("/api/comments/{id}", commentId))
                 .andExpect(status().isNoContent());
-        verify(commentService, times(1)).deleteById(commentId);
+        verify(commentServiceImpl, times(1)).deleteById(commentId);
     }
 
     @Test
     void testDeleteComment_NonExistingId() throws Exception {
         // Prepare
         long commentId = 100;
-        doThrow(IllegalArgumentException.class).when(commentService).deleteById(commentId);
+        doThrow(IllegalArgumentException.class).when(commentServiceImpl).deleteById(commentId);
 
         // Execute and Verify
         mockMvc.perform(delete("/api/comments/{id}", commentId))
                 .andExpect(status().isInternalServerError());
-        verify(commentService, times(1)).deleteById(commentId);
+        verify(commentServiceImpl, times(1)).deleteById(commentId);
     }
 }

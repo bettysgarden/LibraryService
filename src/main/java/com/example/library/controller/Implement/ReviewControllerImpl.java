@@ -1,7 +1,9 @@
 package com.example.library.controller.Implement;
 
+import com.example.library.controller.Interface.ReviewController;
+import com.example.library.entity.Book;
 import com.example.library.entity.Review;
-import com.example.library.service.Implement.ReviewService;
+import com.example.library.service.Implement.ReviewServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +16,14 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/reviews")
-public class ReviewController implements com.example.library.controller.Interface.ReviewController {
+public class ReviewControllerImpl implements ReviewController {
 
-    private final ReviewService reviewService;
-    private final Logger logger = LoggerFactory.getLogger(ReviewController.class);
+    private final ReviewServiceImpl reviewServiceImpl;
+    private final Logger logger = LoggerFactory.getLogger(ReviewControllerImpl.class);
 
     @Autowired
-    public ReviewController(ReviewService reviewService) {
-        this.reviewService = reviewService;
+    public ReviewControllerImpl(ReviewServiceImpl reviewServiceImpl) {
+        this.reviewServiceImpl = reviewServiceImpl;
     }
 
     @Override
@@ -29,7 +31,7 @@ public class ReviewController implements com.example.library.controller.Interfac
     public ResponseEntity<List<Review>> getAllReviews() {
         logger.info("Getting all reviews");
         try {
-            List<Review> reviews = reviewService.getAll();
+            List<Review> reviews = reviewServiceImpl.getAll();
             return ResponseEntity.ok(reviews);
         } catch (Exception e) {
             logger.error("Error occurred while getting all reviews", e);
@@ -42,7 +44,7 @@ public class ReviewController implements com.example.library.controller.Interfac
     public ResponseEntity<Optional<Review>> getReviewById(@PathVariable Long id) {
         logger.info("Getting review by ID: {}", id);
         try {
-            Optional<Review> review = reviewService.findById(id);
+            Optional<Review> review = reviewServiceImpl.findById(id);
             if (review.isPresent()) {
                 return ResponseEntity.ok(review);
             } else {
@@ -59,7 +61,7 @@ public class ReviewController implements com.example.library.controller.Interfac
     public ResponseEntity<Review> createReview(@RequestBody Review review) {
         logger.info("Creating a new review: {}", review);
         try {
-            Review createdReview = reviewService.save(review);
+            Review createdReview = reviewServiceImpl.save(review);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdReview);
         } catch (Exception e) {
             logger.error("Error occurred while creating a review: {}", review, e);
@@ -72,10 +74,23 @@ public class ReviewController implements com.example.library.controller.Interfac
     public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
         logger.info("Deleting review with ID: {}", id);
         try {
-            reviewService.deleteById(id);
+            reviewServiceImpl.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             logger.error("Error occurred while deleting review with ID: {}", id, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    @GetMapping("/book/{bookId}")
+    public ResponseEntity<List<Review>> getReviewsForBook(@PathVariable Long bookId) {
+        logger.info("Getting reviews for book with ID: {}", bookId);
+        try {
+            Book book = new Book();
+            book.setId(bookId);
+            List<Review> reviews = reviewServiceImpl.getReviewsForBook(book);
+            return ResponseEntity.ok(reviews);
+        } catch (Exception e) {
+            logger.error("Error occurred while getting reviews for book with ID: {}", bookId, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

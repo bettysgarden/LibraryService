@@ -2,7 +2,7 @@ package com.example.library.service;
 
 import com.example.library.entity.Genre;
 import com.example.library.repository.Interface.GenreRepository;
-import com.example.library.service.Implement.GenreService;
+import com.example.library.service.Implement.GenreServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class GenreServiceTest {
+class GenreServiceImplTest {
     @Mock
     private GenreRepository genreRepository;
 
     @InjectMocks
-    private GenreService genreService;
+    private GenreServiceImpl genreServiceImpl;
 
     @BeforeEach
     void setUp() {
@@ -37,7 +37,7 @@ class GenreServiceTest {
 
         when(genreRepository.findById(genreId)).thenReturn(optionalGenre);
 
-        Optional<Genre> result = genreService.findById(genreId);
+        Optional<Genre> result = genreServiceImpl.findById(genreId);
 
         assertEquals(optionalGenre, result);
         verify(genreRepository, times(1)).findById(genreId);
@@ -52,7 +52,7 @@ class GenreServiceTest {
 
         when(genreRepository.findAll()).thenReturn(genres);
 
-        List<Genre> result = genreService.getAll();
+        List<Genre> result = genreServiceImpl.getAll();
 
         assertEquals(genres, result);
         verify(genreRepository, times(1)).findAll();
@@ -65,7 +65,7 @@ class GenreServiceTest {
 
         when(genreRepository.save(any(Genre.class))).thenReturn(genre);
 
-        Genre result = genreService.save(genre);
+        Genre result = genreServiceImpl.save(genre);
 
         assertEquals(genre, result);
         verify(genreRepository, times(1)).save(genre);
@@ -78,7 +78,7 @@ class GenreServiceTest {
 
         doNothing().when(genreRepository).deleteById(genreId);
 
-        genreService.deleteById(genreId);
+        genreServiceImpl.deleteById(genreId);
 
         verify(genreRepository, times(1)).deleteById(genreId);
         verifyNoMoreInteractions(genreRepository);

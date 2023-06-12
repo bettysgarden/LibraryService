@@ -1,7 +1,8 @@
 package com.example.library.controller.Implement;
 
+import com.example.library.controller.Interface.PublisherController;
 import com.example.library.entity.Publisher;
-import com.example.library.service.Implement.PublisherService;
+import com.example.library.service.Implement.PublisherServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,14 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/publishers")
-public class PublisherController implements com.example.library.controller.Interface.PublisherController {
+public class PublisherControllerImpl implements PublisherController {
 
-    private final PublisherService publisherService;
-    private final Logger logger = LoggerFactory.getLogger(PublisherController.class);
+    private final PublisherServiceImpl publisherServiceImpl;
+    private final Logger logger = LoggerFactory.getLogger(PublisherControllerImpl.class);
 
     @Autowired
-    public PublisherController(PublisherService publisherService) {
-        this.publisherService = publisherService;
+    public PublisherControllerImpl(PublisherServiceImpl publisherServiceImpl) {
+        this.publisherServiceImpl = publisherServiceImpl;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class PublisherController implements com.example.library.controller.Inter
     public ResponseEntity<List<Publisher>> getAllPublishers() {
         logger.info("Getting all publishers");
         try {
-            List<Publisher> publishers = publisherService.getAll();
+            List<Publisher> publishers = publisherServiceImpl.getAll();
             return ResponseEntity.ok(publishers);
         } catch (Exception e) {
             logger.error("Error occurred while getting all publishers", e);
@@ -42,7 +43,7 @@ public class PublisherController implements com.example.library.controller.Inter
     public ResponseEntity<Optional<Publisher>> getPublisherById(@PathVariable Long id) {
         logger.info("Getting publisher by ID: {}", id);
         try {
-            Optional<Publisher> publisher = publisherService.findById(id);
+            Optional<Publisher> publisher = publisherServiceImpl.findById(id);
             if (publisher.isPresent()) {
                 return ResponseEntity.ok(publisher);
             } else {
@@ -59,7 +60,7 @@ public class PublisherController implements com.example.library.controller.Inter
     public ResponseEntity<Publisher> createPublisher(@RequestBody Publisher publisher) {
         logger.info("Creating a new publisher: {}", publisher);
         try {
-            Publisher createdPublisher = publisherService.save(publisher);
+            Publisher createdPublisher = publisherServiceImpl.save(publisher);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdPublisher);
         } catch (Exception e) {
             logger.error("Error occurred while creating a publisher: {}", publisher, e);
@@ -72,7 +73,7 @@ public class PublisherController implements com.example.library.controller.Inter
     public ResponseEntity<Void> deletePublisher(@PathVariable Long id) {
         logger.info("Deleting publisher with ID: {}", id);
         try {
-            publisherService.deleteById(id);
+            publisherServiceImpl.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             logger.error("Error occurred while deleting publisher with ID: {}", id, e);

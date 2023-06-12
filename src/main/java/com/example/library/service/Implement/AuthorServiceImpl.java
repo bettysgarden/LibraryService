@@ -2,6 +2,7 @@ package com.example.library.service.Implement;
 
 import com.example.library.entity.Author;
 import com.example.library.repository.Interface.AuthorRepository;
+import com.example.library.service.Interface.AuthorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AuthorService implements com.example.library.service.Interface.AuthorService {
-    private static final Logger logger = LoggerFactory.getLogger(AuthorService.class);
+public class AuthorServiceImpl implements AuthorService {
+    private static final Logger logger = LoggerFactory.getLogger(AuthorServiceImpl.class);
 
     @Autowired
     private AuthorRepository authorRepository;

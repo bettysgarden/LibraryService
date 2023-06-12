@@ -2,7 +2,7 @@ package com.example.library.service;
 
 import com.example.library.entity.Author;
 import com.example.library.repository.Interface.AuthorRepository;
-import com.example.library.service.Implement.AuthorService;
+import com.example.library.service.Implement.AuthorServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class AuthorServiceTest {
+class AuthorServiceImplTest {
     @Mock
     private AuthorRepository authorRepository;
 
     @InjectMocks
-    private AuthorService authorService;
+    private AuthorServiceImpl authorServiceImpl;
 
     @BeforeEach
     void setUp() {
@@ -37,7 +37,7 @@ class AuthorServiceTest {
 
         when(authorRepository.findById(authorId)).thenReturn(optionalAuthor);
 
-        Optional<Author> result = authorService.findById(authorId);
+        Optional<Author> result = authorServiceImpl.findById(authorId);
 
         assertEquals(optionalAuthor, result);
         verify(authorRepository, times(1)).findById(authorId);
@@ -52,7 +52,7 @@ class AuthorServiceTest {
 
         when(authorRepository.findAll()).thenReturn(authors);
 
-        List<Author> result = authorService.getAll();
+        List<Author> result = authorServiceImpl.getAll();
 
         assertEquals(authors, result);
         verify(authorRepository, times(1)).findAll();
@@ -65,7 +65,7 @@ class AuthorServiceTest {
 
         when(authorRepository.save(any(Author.class))).thenReturn(author);
 
-        Author result = authorService.save(author);
+        Author result = authorServiceImpl.save(author);
 
         assertEquals(author, result);
         verify(authorRepository, times(1)).save(author);
@@ -78,7 +78,7 @@ class AuthorServiceTest {
 
         doNothing().when(authorRepository).deleteById(authorId);
 
-        authorService.deleteById(authorId);
+        authorServiceImpl.deleteById(authorId);
 
         verify(authorRepository, times(1)).deleteById(authorId);
         verifyNoMoreInteractions(authorRepository);

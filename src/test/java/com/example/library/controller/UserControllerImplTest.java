@@ -1,8 +1,8 @@
 package com.example.library.controller;
 
-import com.example.library.controller.Implement.UserController;
+import com.example.library.controller.Implement.UserControllerImpl;
 import com.example.library.entity.User;
-import com.example.library.service.Implement.UserService;
+import com.example.library.service.Implement.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,18 +23,18 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class UserControllerTest {
+class UserControllerImplTest {
     private MockMvc mockMvc;
     @InjectMocks
-    private UserController userController;
+    private UserControllerImpl userControllerImpl;
 
     @Mock
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(userControllerImpl).build();
     }
 
     @Test
@@ -43,10 +43,10 @@ class UserControllerTest {
         List<User> users = new ArrayList<>();
         users.add(new User(1L, 25, "New York", "john", "password"));
         users.add(new User(2L, 30, "London", "alice", "password"));
-        when(userService.getAll()).thenReturn(users);
+        when(userServiceImpl.getAll()).thenReturn(users);
 
         // Execute
-        ResponseEntity<List<User>> response = userController.getAllUsers();
+        ResponseEntity<List<User>> response = userControllerImpl.getAllUsers();
 
         // Verify
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -54,20 +54,20 @@ class UserControllerTest {
         assertEquals(2, responseUsers.size());
         assertTrue(responseUsers.contains(users.get(0)));
         assertTrue(responseUsers.contains(users.get(1)));
-        verify(userService, times(1)).getAll();
+        verify(userServiceImpl, times(1)).getAll();
     }
 
     @Test
     void getUserById_NotFound() throws Exception {
         Long userId = 1L;
 
-        when(userService.findById(userId)).thenReturn(Optional.empty());
+        when(userServiceImpl.findById(userId)).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/api/users/{id}", userId))
                 .andExpect(status().isNotFound());
 
-        verify(userService, times(1)).findById(userId);
-        verifyNoMoreInteractions(userService);
+        verify(userServiceImpl, times(1)).findById(userId);
+        verifyNoMoreInteractions(userServiceImpl);
     }
 
     @Test
@@ -75,16 +75,16 @@ class UserControllerTest {
         // Prepare
         User user = new User(null, 25, "New York", "john", "password");
         User createdUser = new User(1L, 25, "New York", "john", "password");
-        when(userService.save(user)).thenReturn(createdUser);
+        when(userServiceImpl.save(user)).thenReturn(createdUser);
 
         // Execute
-        ResponseEntity<User> response = userController.createUser(user);
+        ResponseEntity<User> response = userControllerImpl.createUser(user);
 
         // Verify
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         User responseBody = response.getBody();
         assertEquals(createdUser, responseBody);
-        verify(userService, times(1)).save(user);
+        verify(userServiceImpl, times(1)).save(user);
     }
 
     @Test
@@ -93,24 +93,24 @@ class UserControllerTest {
         Long userId = 1L;
 
         // Execute
-        ResponseEntity<Void> response = userController.deleteUser(userId);
+        ResponseEntity<Void> response = userControllerImpl.deleteUser(userId);
 
         // Verify
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        verify(userService, times(1)).deleteById(userId);
+        verify(userServiceImpl, times(1)).deleteById(userId);
     }
 
     @Test
     void testDeleteUser_NonExistingId() {
         // Prepare
         Long userId = 100L;
-        doThrow(new IllegalArgumentException()).when(userService).deleteById(userId);
+        doThrow(new IllegalArgumentException()).when(userServiceImpl).deleteById(userId);
 
         // Execute
-        ResponseEntity<Void> response = userController.deleteUser(userId);
+        ResponseEntity<Void> response = userControllerImpl.deleteUser(userId);
 
         // Verify
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        verify(userService, times(1)).deleteById(userId);
+        verify(userServiceImpl, times(1)).deleteById(userId);
     }
 }

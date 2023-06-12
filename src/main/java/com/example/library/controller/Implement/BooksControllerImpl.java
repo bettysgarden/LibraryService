@@ -1,7 +1,8 @@
 package com.example.library.controller.Implement;
 
+import com.example.library.controller.Interface.BooksController;
 import com.example.library.entity.Book;
-import com.example.library.service.Implement.BooksService;
+import com.example.library.service.Implement.BooksServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,14 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/books")
-public class BooksController implements com.example.library.controller.Interface.BooksController {
+public class BooksControllerImpl implements BooksController {
 
-    private final BooksService bookService;
+    private final BooksServiceImpl bookService;
 
-    private final Logger logger = LoggerFactory.getLogger(BooksController.class);
+    private final Logger logger = LoggerFactory.getLogger(BooksControllerImpl.class);
 
     @Autowired
-    public BooksController(BooksService bookService) {
+    public BooksControllerImpl(BooksServiceImpl bookService) {
         this.bookService = bookService;
     }
 

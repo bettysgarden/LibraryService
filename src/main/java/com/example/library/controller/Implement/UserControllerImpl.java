@@ -1,7 +1,8 @@
 package com.example.library.controller.Implement;
 
+import com.example.library.controller.Interface.UserController;
 import com.example.library.entity.User;
-import com.example.library.service.Implement.UserService;
+import com.example.library.service.Implement.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,14 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
-public class UserController implements com.example.library.controller.Interface.UserController {
+public class UserControllerImpl implements UserController {
 
-    private final UserService userService;
-    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final UserServiceImpl userServiceImpl;
+    private final Logger logger = LoggerFactory.getLogger(UserControllerImpl.class);
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserControllerImpl(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class UserController implements com.example.library.controller.Interface.
     public ResponseEntity<List<User>> getAllUsers() {
         logger.info("Getting all users");
         try {
-            List<User> users = userService.getAll();
+            List<User> users = userServiceImpl.getAll();
             return ResponseEntity.ok(users);
         } catch (Exception e) {
             logger.error("Error occurred while getting all users", e);
@@ -42,7 +43,7 @@ public class UserController implements com.example.library.controller.Interface.
     public ResponseEntity<Optional<User>> getUserById(@PathVariable Long id) {
         logger.info("Getting user by ID: {}", id);
         try {
-            Optional<User> user = userService.findById(id);
+            Optional<User> user = userServiceImpl.findById(id);
             if (user.isPresent()) {
                 return ResponseEntity.ok(user);
             } else {
@@ -59,7 +60,7 @@ public class UserController implements com.example.library.controller.Interface.
     public ResponseEntity<User> createUser(@RequestBody User user) {
         logger.info("Creating a new user: {}", user);
         try {
-            User createdUser = userService.save(user);
+            User createdUser = userServiceImpl.save(user);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
         } catch (Exception e) {
             logger.error("Error occurred while creating a user: {}", user, e);
@@ -72,7 +73,7 @@ public class UserController implements com.example.library.controller.Interface.
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         logger.info("Deleting user with ID: {}", id);
         try {
-            userService.deleteById(id);
+            userServiceImpl.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             logger.error("Error occurred while deleting user with ID: {}", id, e);

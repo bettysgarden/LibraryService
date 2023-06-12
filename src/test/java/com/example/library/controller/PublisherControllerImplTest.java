@@ -1,8 +1,8 @@
 package com.example.library.controller;
 
 import com.example.library.entity.Publisher;
-import com.example.library.service.Implement.PublisherService;
-import com.example.library.controller.Implement.PublisherController;
+import com.example.library.service.Implement.PublisherServiceImpl;
+import com.example.library.controller.Implement.PublisherControllerImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,20 +21,20 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class PublisherControllerTest {
+class PublisherControllerImplTest {
 
     private MockMvc mockMvc;
 
     @Mock
-    private PublisherService publisherService;
+    private PublisherServiceImpl publisherServiceImpl;
 
     @InjectMocks
-    private PublisherController publisherController;
+    private PublisherControllerImpl publisherControllerImpl;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(publisherController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(publisherControllerImpl).build();
     }
 
     @Test
@@ -43,7 +43,7 @@ class PublisherControllerTest {
         publishers.add(new Publisher(1L, "Publisher 1"));
         publishers.add(new Publisher(2L, "Publisher 2"));
 
-        when(publisherService.getAll()).thenReturn(publishers);
+        when(publisherServiceImpl.getAll()).thenReturn(publishers);
 
         mockMvc.perform(get("/api/publishers"))
                 .andExpect(status().isOk())
@@ -52,8 +52,8 @@ class PublisherControllerTest {
                 .andExpect(jsonPath("$[0].title").value("Publisher 1"))
                 .andExpect(jsonPath("$[1].title").value("Publisher 2"));
 
-        verify(publisherService, times(1)).getAll();
-        verifyNoMoreInteractions(publisherService);
+        verify(publisherServiceImpl, times(1)).getAll();
+        verifyNoMoreInteractions(publisherServiceImpl);
     }
 
     @Test
@@ -61,28 +61,28 @@ class PublisherControllerTest {
         long publisherId = 1;
         Publisher publisher = new Publisher("Publisher 1");
 
-        when(publisherService.findById(publisherId)).thenReturn(Optional.of(publisher));
+        when(publisherServiceImpl.findById(publisherId)).thenReturn(Optional.of(publisher));
 
         mockMvc.perform(get("/api/publishers/{id}", publisherId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.title").value("Publisher 1"));
 
-        verify(publisherService, times(1)).findById(publisherId);
-        verifyNoMoreInteractions(publisherService);
+        verify(publisherServiceImpl, times(1)).findById(publisherId);
+        verifyNoMoreInteractions(publisherServiceImpl);
     }
 
     @Test
     void getPublisherById_NotFound() throws Exception {
         long publisherId = 1;
 
-        when(publisherService.findById(publisherId)).thenReturn(Optional.empty());
+        when(publisherServiceImpl.findById(publisherId)).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/api/publishers/{id}", publisherId))
                 .andExpect(status().isNotFound());
 
-        verify(publisherService, times(1)).findById(publisherId);
-        verifyNoMoreInteractions(publisherService);
+        verify(publisherServiceImpl, times(1)).findById(publisherId);
+        verifyNoMoreInteractions(publisherServiceImpl);
     }
 
     @Test
@@ -90,7 +90,7 @@ class PublisherControllerTest {
         Publisher publisher = new Publisher("Publisher 1");
         Publisher savedPublisher = new Publisher(1L, "Publisher 1");
 
-        when(publisherService.save(any(Publisher.class))).thenReturn(savedPublisher);
+        when(publisherServiceImpl.save(any(Publisher.class))).thenReturn(savedPublisher);
 
         mockMvc.perform(post("/api/publishers")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -100,8 +100,8 @@ class PublisherControllerTest {
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.title").value("Publisher 1"));
 
-        verify(publisherService, times(1)).save(any(Publisher.class));
-        verifyNoMoreInteractions(publisherService);
+        verify(publisherServiceImpl, times(1)).save(any(Publisher.class));
+        verifyNoMoreInteractions(publisherServiceImpl);
     }
 
     @Test
@@ -111,8 +111,8 @@ class PublisherControllerTest {
         mockMvc.perform(delete("/api/publishers/{id}", publisherId))
                 .andExpect(status().isNoContent());
 
-        verify(publisherService, times(1)).deleteById(publisherId);
-        verifyNoMoreInteractions(publisherService);
+        verify(publisherServiceImpl, times(1)).deleteById(publisherId);
+        verifyNoMoreInteractions(publisherServiceImpl);
     }
 }
 

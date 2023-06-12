@@ -2,7 +2,7 @@ package com.example.library.service;
 
 import com.example.library.entity.Comment;
 import com.example.library.repository.Interface.CommentRepository;
-import com.example.library.service.Implement.CommentService;
+import com.example.library.service.Implement.CommentServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class CommentServiceTest {
+class CommentServiceImplTest {
     @Mock
     private CommentRepository commentRepository;
 
     @InjectMocks
-    private CommentService commentService;
+    private CommentServiceImpl commentServiceImpl;
 
     @BeforeEach
     void setUp() {
@@ -37,7 +37,7 @@ class CommentServiceTest {
 
         when(commentRepository.findById(commentId)).thenReturn(optionalComment);
 
-        Optional<Comment> result = commentService.findById(commentId);
+        Optional<Comment> result = commentServiceImpl.findById(commentId);
 
         assertEquals(optionalComment, result);
         verify(commentRepository, times(1)).findById(commentId);
@@ -52,7 +52,7 @@ class CommentServiceTest {
 
         when(commentRepository.findAll()).thenReturn(comments);
 
-        List<Comment> result = commentService.getAll();
+        List<Comment> result = commentServiceImpl.getAll();
 
         assertEquals(comments, result);
         verify(commentRepository, times(1)).findAll();
@@ -65,7 +65,7 @@ class CommentServiceTest {
 
         when(commentRepository.save(any(Comment.class))).thenReturn(comment);
 
-        Comment result = commentService.save(comment);
+        Comment result = commentServiceImpl.save(comment);
 
         assertEquals(comment, result);
         verify(commentRepository, times(1)).save(comment);
@@ -78,7 +78,7 @@ class CommentServiceTest {
 
         doNothing().when(commentRepository).deleteById(commentId);
 
-        commentService.deleteById(commentId);
+        commentServiceImpl.deleteById(commentId);
 
         verify(commentRepository, times(1)).deleteById(commentId);
         verifyNoMoreInteractions(commentRepository);

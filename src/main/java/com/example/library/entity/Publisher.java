@@ -14,7 +14,7 @@ import java.util.Set;
 public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "title")
     private String title;
@@ -30,16 +30,16 @@ public class Publisher {
         this.title = title;
     }
 
-    public Publisher(long id, String title) {
+    public Publisher(Long id, String title) {
         this.id = id;
         this.title = title;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

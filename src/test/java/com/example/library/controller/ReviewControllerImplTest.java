@@ -1,9 +1,9 @@
 package com.example.library.controller;
 
 
-import com.example.library.controller.Implement.ReviewController;
+import com.example.library.controller.Implement.ReviewControllerImpl;
 import com.example.library.entity.Review;
-import com.example.library.service.Implement.ReviewService;
+import com.example.library.service.Implement.ReviewServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,29 +22,29 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class ReviewControllerTest {
+class ReviewControllerImplTest {
 
     private MockMvc mockMvc;
 
     @Mock
-    private ReviewService reviewService;
+    private ReviewServiceImpl reviewServiceImpl;
     @InjectMocks
-    private ReviewController reviewController;
+    private ReviewControllerImpl reviewControllerImpl;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        reviewController = new ReviewController(reviewService);
-        mockMvc = MockMvcBuilders.standaloneSetup(reviewController).build();
+        reviewControllerImpl = new ReviewControllerImpl(reviewServiceImpl);
+        mockMvc = MockMvcBuilders.standaloneSetup(reviewControllerImpl).build();
     }
 
     @Test
     void testGetAllReviews() throws Exception {
         // Prepare
         List<Review> reviews = new ArrayList<>();
-        reviews.add(new Review(1L, 5, "Good book"));
-        reviews.add(new Review(2L, 4, "Interesting read"));
-        when(reviewService.getAll()).thenReturn(reviews);
+        reviews.add(new Review(1L, 5.0, "Good book"));
+        reviews.add(new Review(2L, 4.0, "Interesting read"));
+        when(reviewServiceImpl.getAll()).thenReturn(reviews);
 
         // Execute and Verify
         mockMvc.perform(get("/api/reviews"))
@@ -57,15 +57,15 @@ class ReviewControllerTest {
                 .andExpect(jsonPath("$[1].id").value(2))
                 .andExpect(jsonPath("$[1].content").value("Interesting read"))
                 .andExpect(jsonPath("$[1].rating").value(4));
-        verify(reviewService, times(1)).getAll();
+        verify(reviewServiceImpl, times(1)).getAll();
     }
 
     @Test
     void testGetReviewById_ExistingId() throws Exception {
         // Prepare
         Long reviewId = 1L;
-        Review review = new Review(reviewId, 5, "Good book");
-        when(reviewService.findById(reviewId)).thenReturn(Optional.of(review));
+        Review review = new Review(reviewId, 5.0, "Good book");
+        when(reviewServiceImpl.findById(reviewId)).thenReturn(Optional.of(review));
 
         // Execute and Verify
         mockMvc.perform(get("/api/reviews/{id}", reviewId))
@@ -74,27 +74,27 @@ class ReviewControllerTest {
                 .andExpect(jsonPath("$.id").value(reviewId))
                 .andExpect(jsonPath("$.content").value("Good book"))
                 .andExpect(jsonPath("$.rating").value(5));
-        verify(reviewService, times(1)).findById(reviewId);
+        verify(reviewServiceImpl, times(1)).findById(reviewId);
     }
 
     @Test
     void testGetReviewById_NonExistingId() throws Exception {
         // Prepare
         long reviewId = 100;
-        when(reviewService.findById(reviewId)).thenReturn(Optional.empty());
+        when(reviewServiceImpl.findById(reviewId)).thenReturn(Optional.empty());
 
         // Execute and Verify
         mockMvc.perform(get("/api/reviews/{id}", reviewId))
                 .andExpect(status().isNotFound());
-        verify(reviewService, times(1)).findById(reviewId);
+        verify(reviewServiceImpl, times(1)).findById(reviewId);
     }
 
     @Test
     void testCreateReview() throws Exception {
         // Prepare
-        Review review = new Review(null, 5, "Good book");
-        Review createdReview = new Review(1L, 5, "Good book");
-        when(reviewService.save(any(Review.class))).thenReturn(createdReview);
+        Review review = new Review(null, 5.0, "Good book");
+        Review createdReview = new Review(1L, 5.0, "Good book");
+        when(reviewServiceImpl.save(any(Review.class))).thenReturn(createdReview);
 
         // Execute and Verify
         mockMvc.perform(post("/api/reviews")
@@ -105,7 +105,7 @@ class ReviewControllerTest {
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.content").value("Good book"))
                 .andExpect(jsonPath("$.rating").value(5));
-        verify(reviewService, times(1)).save(any(Review.class));
+        verify(reviewServiceImpl, times(1)).save(any(Review.class));
     }
 
     @Test
@@ -116,19 +116,19 @@ class ReviewControllerTest {
         // Execute and Verify
         mockMvc.perform(delete("/api/reviews/{id}", reviewId))
                 .andExpect(status().isNoContent());
-        verify(reviewService, times(1)).deleteById(reviewId);
+        verify(reviewServiceImpl, times(1)).deleteById(reviewId);
     }
 
     @Test
     void testDeleteReview_NonExistingId() throws Exception {
         // Prepare
         long reviewId = 100;
-        doThrow(IllegalArgumentException.class).when(reviewService).deleteById(reviewId);
+        doThrow(IllegalArgumentException.class).when(reviewServiceImpl).deleteById(reviewId);
 
         // Execute and Verify
         mockMvc.perform(delete("/api/reviews/{id}", reviewId))
                 .andExpect(status().isInternalServerError());
-        verify(reviewService, times(1)).deleteById(reviewId);
+        verify(reviewServiceImpl, times(1)).deleteById(reviewId);
     }
 }
 

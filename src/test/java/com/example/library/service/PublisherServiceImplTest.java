@@ -2,7 +2,7 @@ package com.example.library.service;
 
 import com.example.library.entity.Publisher;
 import com.example.library.repository.Interface.PublisherRepository;
-import com.example.library.service.Implement.PublisherService;
+import com.example.library.service.Implement.PublisherServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class PublisherServiceTest {
+class PublisherServiceImplTest {
     @Mock
     private PublisherRepository publisherRepository;
 
     @InjectMocks
-    private PublisherService publisherService;
+    private PublisherServiceImpl publisherServiceImpl;
 
     @BeforeEach
     void setUp() {
@@ -37,7 +37,7 @@ class PublisherServiceTest {
 
         when(publisherRepository.findById(publisherId)).thenReturn(optionalPublisher);
 
-        Optional<Publisher> result = publisherService.findById(publisherId);
+        Optional<Publisher> result = publisherServiceImpl.findById(publisherId);
 
         assertEquals(optionalPublisher, result);
         verify(publisherRepository, times(1)).findById(publisherId);
@@ -52,7 +52,7 @@ class PublisherServiceTest {
 
         when(publisherRepository.findAll()).thenReturn(publishers);
 
-        List<Publisher> result = publisherService.getAll();
+        List<Publisher> result = publisherServiceImpl.getAll();
 
         assertEquals(publishers, result);
         verify(publisherRepository, times(1)).findAll();
@@ -65,7 +65,7 @@ class PublisherServiceTest {
 
         when(publisherRepository.save(any(Publisher.class))).thenReturn(publisher);
 
-        Publisher result = publisherService.save(publisher);
+        Publisher result = publisherServiceImpl.save(publisher);
 
         assertEquals(publisher, result);
         verify(publisherRepository, times(1)).save(publisher);
@@ -78,7 +78,7 @@ class PublisherServiceTest {
 
         doNothing().when(publisherRepository).deleteById(publisherId);
 
-        publisherService.deleteById(publisherId);
+        publisherServiceImpl.deleteById(publisherId);
 
         verify(publisherRepository, times(1)).deleteById(publisherId);
         verifyNoMoreInteractions(publisherRepository);

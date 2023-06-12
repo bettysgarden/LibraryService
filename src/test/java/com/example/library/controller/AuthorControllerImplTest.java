@@ -1,13 +1,11 @@
 package com.example.library.controller;
 
-import com.example.library.controller.Implement.AuthorController;
-import com.example.library.service.Implement.AuthorService;
+import com.example.library.controller.Implement.AuthorControllerImpl;
+import com.example.library.service.Implement.AuthorServiceImpl;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 import com.example.library.entity.Author;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -24,18 +22,18 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class AuthorControllerTest {
+class AuthorControllerImplTest {
     private MockMvc mockMvc;
     @Mock
-    private AuthorService authorService;
+    private AuthorServiceImpl authorServiceImpl;
     @InjectMocks
-    private AuthorController authorController;
+    private AuthorControllerImpl authorControllerImpl;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        authorController = new AuthorController(authorService);
-        mockMvc = MockMvcBuilders.standaloneSetup(authorController).build();
+        authorControllerImpl = new AuthorControllerImpl(authorServiceImpl);
+        mockMvc = MockMvcBuilders.standaloneSetup(authorControllerImpl).build();
     }
 
     @Test
@@ -44,7 +42,7 @@ class AuthorControllerTest {
         List<Author> authors = new ArrayList<>();
         authors.add(new Author(1L, "John Doe"));
         authors.add(new Author(2L, "Jane Smith"));
-        when(authorService.getAll()).thenReturn(authors);
+        when(authorServiceImpl.getAll()).thenReturn(authors);
 
         // Execute and Verify
         mockMvc.perform(get("/api/authors"))
@@ -55,7 +53,7 @@ class AuthorControllerTest {
                 .andExpect(jsonPath("$[0].name").value("John Doe"))
                 .andExpect(jsonPath("$[1].id").value(2L))
                 .andExpect(jsonPath("$[1].name").value("Jane Smith"));
-        verify(authorService, times(1)).getAll();
+        verify(authorServiceImpl, times(1)).getAll();
     }
 
     @Test
@@ -63,7 +61,7 @@ class AuthorControllerTest {
         // Prepare
         long authorId = 1;
         Author author = new Author(authorId, "John Doe");
-        when(authorService.findById(authorId)).thenReturn(Optional.of(author));
+        when(authorServiceImpl.findById(authorId)).thenReturn(Optional.of(author));
 
         // Execute and Verify
         mockMvc.perform(get("/api/authors/{id}", authorId))
@@ -71,19 +69,19 @@ class AuthorControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(authorId))
                 .andExpect(jsonPath("$.name").value("John Doe"));
-        verify(authorService, times(1)).findById(authorId);
+        verify(authorServiceImpl, times(1)).findById(authorId);
     }
 
     @Test
     void testGetAuthorById_NonExistingId() throws Exception {
         // Prepare
         long authorId = 100;
-        when(authorService.findById(authorId)).thenReturn(Optional.empty());
+        when(authorServiceImpl.findById(authorId)).thenReturn(Optional.empty());
 
         // Execute and Verify
         mockMvc.perform(get("/api/authors/{id}", authorId))
                 .andExpect(status().isNotFound());
-        verify(authorService, times(1)).findById(authorId);
+        verify(authorServiceImpl, times(1)).findById(authorId);
     }
 
     @Test
@@ -92,7 +90,7 @@ class AuthorControllerTest {
         Author author = new Author(null, "John Doe");
         Author createdAuthor = new Author(1L, "John Doe");
 
-        when(authorService.save(any(Author.class))).thenReturn(createdAuthor);
+        when(authorServiceImpl.save(any(Author.class))).thenReturn(createdAuthor);
 
         // Execute and Verify
         mockMvc.perform(post("/api/authors")
@@ -102,7 +100,7 @@ class AuthorControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.name").value("John Doe"));
-        verify(authorService, times(1)).save(any(Author.class));
+        verify(authorServiceImpl, times(1)).save(any(Author.class));
     }
 
     @Test
@@ -113,18 +111,18 @@ class AuthorControllerTest {
         // Execute and Verify
         mockMvc.perform(delete("/api/authors/{id}", authorId))
                 .andExpect(status().isNoContent());
-        verify(authorService, times(1)).deleteById(authorId);
+        verify(authorServiceImpl, times(1)).deleteById(authorId);
     }
 
     @Test
     void testDeleteAuthor_NonExistingId() throws Exception {
         // Prepare
         long authorId = 100;
-        doThrow(IllegalArgumentException.class).when(authorService).deleteById(authorId);
+        doThrow(IllegalArgumentException.class).when(authorServiceImpl).deleteById(authorId);
 
         // Execute and Verify
         mockMvc.perform(delete("/api/authors/{id}", authorId))
                 .andExpect(status().isInternalServerError());
-        verify(authorService, times(1)).deleteById(authorId);
+        verify(authorServiceImpl, times(1)).deleteById(authorId);
     }
 }

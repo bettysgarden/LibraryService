@@ -16,7 +16,7 @@ public class Review {
     private Long id;
 
     @Column(name = "rating", nullable = false)
-    private Integer rating;
+    private Double rating;
 
     @Column(name = "content", length = 10000)
     private String content;
@@ -32,6 +32,7 @@ public class Review {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_iduser", nullable = false)
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -40,12 +41,12 @@ public class Review {
     public Review() {
     }
 
-    public Review(Integer rating, String content) {
+    public Review(Double rating, String content) {
         this.rating = rating;
         this.content = content;
     }
 
-    public Review(Long id, Integer rating, String content) {
+    public Review(Long id, Double rating, String content) {
         this.id = id;
         this.rating = rating;
         this.content = content;
@@ -59,11 +60,11 @@ public class Review {
         this.id = id;
     }
 
-    public Integer getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 

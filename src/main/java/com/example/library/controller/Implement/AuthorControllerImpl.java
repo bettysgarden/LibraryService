@@ -1,7 +1,8 @@
 package com.example.library.controller.Implement;
 
+import com.example.library.controller.Interface.AuthorController;
 import com.example.library.entity.Author;
-import com.example.library.service.Implement.AuthorService;
+import com.example.library.service.Implement.AuthorServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,14 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/authors")
-public class AuthorController implements com.example.library.controller.Interface.AuthorController {
-    private final Logger logger = LoggerFactory.getLogger(AuthorController.class);
+public class AuthorControllerImpl implements AuthorController {
+    private final Logger logger = LoggerFactory.getLogger(AuthorControllerImpl.class);
 
-    private final AuthorService authorService;
+    private final AuthorServiceImpl authorServiceImpl;
 
     @Autowired
-    public AuthorController(AuthorService authorService) {
-        this.authorService = authorService;
+    public AuthorControllerImpl(AuthorServiceImpl authorServiceImpl) {
+        this.authorServiceImpl = authorServiceImpl;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class AuthorController implements com.example.library.controller.Interfac
     public ResponseEntity<List<Author>> getAllAuthors() {
         logger.info("Fetching all authors");
         try {
-            List<Author> authors = authorService.getAll();
+            List<Author> authors = authorServiceImpl.getAll();
             return ResponseEntity.ok(authors);
         } catch (Exception e) {
             logger.error("Error occurred while fetching all authors", e);
@@ -42,7 +43,7 @@ public class AuthorController implements com.example.library.controller.Interfac
     public ResponseEntity<Author> getAuthorById(@PathVariable Long id) {
         logger.info("Fetching author with ID: {}", id);
         try {
-            Optional<Author> author = authorService.findById(id);
+            Optional<Author> author = authorServiceImpl.findById(id);
             return author.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
         } catch (Exception e) {
             logger.error("Error occurred while fetching author with ID: {}", id, e);
@@ -55,7 +56,7 @@ public class AuthorController implements com.example.library.controller.Interfac
     public ResponseEntity<Author> createAuthor(@RequestBody Author author) {
         logger.info("Creating a new author: {}", author);
         try {
-            Author createdAuthor = authorService.save(author);
+            Author createdAuthor = authorServiceImpl.save(author);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdAuthor);
         } catch (Exception e) {
             logger.error("Error occurred while creating a author: {}", author, e);
@@ -68,7 +69,7 @@ public class AuthorController implements com.example.library.controller.Interfac
     public ResponseEntity<Void> deleteAuthor(@PathVariable Long id) {
         logger.info("Deleting author with ID: {}", id);
         try {
-            authorService.deleteById(id);
+            authorServiceImpl.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             logger.error("Error occurred while deleting author with ID: {}", id, e);

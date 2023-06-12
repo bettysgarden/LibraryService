@@ -1,7 +1,8 @@
 package com.example.library.controller.Implement;
 
+import com.example.library.controller.Interface.GenreController;
 import com.example.library.entity.Genre;
-import com.example.library.service.Implement.GenreService;
+import com.example.library.service.Implement.GenreServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,14 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/genres")
-public class GenreController implements com.example.library.controller.Interface.GenreController {
+public class GenreControllerImpl implements GenreController {
 
-    private final GenreService genreService;
-    private final Logger logger = LoggerFactory.getLogger(GenreController.class);
+    private final GenreServiceImpl genreServiceImpl;
+    private final Logger logger = LoggerFactory.getLogger(GenreControllerImpl.class);
 
     @Autowired
-    public GenreController(GenreService genreService) {
-        this.genreService = genreService;
+    public GenreControllerImpl(GenreServiceImpl genreServiceImpl) {
+        this.genreServiceImpl = genreServiceImpl;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class GenreController implements com.example.library.controller.Interface
     public ResponseEntity<List<Genre>> getAllGenres() {
         logger.info("Getting all genres");
         try {
-            List<Genre> genres = genreService.getAll();
+            List<Genre> genres = genreServiceImpl.getAll();
             return ResponseEntity.ok(genres);
         } catch (Exception e) {
             logger.error("Error occurred while getting all genres", e);
@@ -42,7 +43,7 @@ public class GenreController implements com.example.library.controller.Interface
     public ResponseEntity<Optional<Genre>> getGenreById(@PathVariable Long id) {
         logger.info("Getting genre by ID: {}", id);
         try {
-            Optional<Genre> genre = genreService.findById(id);
+            Optional<Genre> genre = genreServiceImpl.findById(id);
             if (genre.isPresent()) {
                 return ResponseEntity.ok(genre);
             } else {
@@ -59,7 +60,7 @@ public class GenreController implements com.example.library.controller.Interface
     public ResponseEntity<Genre> createGenre(@RequestBody Genre genre) {
         logger.info("Creating a new genre: {}", genre);
         try {
-            Genre createdGenre = genreService.save(genre);
+            Genre createdGenre = genreServiceImpl.save(genre);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdGenre);
         } catch (Exception e) {
             logger.error("Error occurred while creating a genre: {}", genre, e);
@@ -72,7 +73,7 @@ public class GenreController implements com.example.library.controller.Interface
     public ResponseEntity<Void> deleteGenre(@PathVariable Long id) {
         logger.info("Deleting genre with ID: {}", id);
         try {
-            genreService.deleteById(id);
+            genreServiceImpl.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             logger.error("Error occurred while deleting genre with ID: {}", id, e);

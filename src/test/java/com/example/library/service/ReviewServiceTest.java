@@ -2,7 +2,7 @@ package com.example.library.service;
 
 import com.example.library.entity.Review;
 import com.example.library.repository.Interface.ReviewRepository;
-import com.example.library.service.Implement.ReviewService;
+import com.example.library.service.Implement.ReviewServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,7 +22,7 @@ class ReviewServiceTest {
     private ReviewRepository reviewRepository;
 
     @InjectMocks
-    private ReviewService reviewService;
+    private ReviewServiceImpl reviewServiceImpl;
 
     @BeforeEach
     void setUp() {
@@ -37,7 +37,7 @@ class ReviewServiceTest {
 
         when(reviewRepository.findById(reviewId)).thenReturn(optionalReview);
 
-        Optional<Review> result = reviewService.findById(reviewId);
+        Optional<Review> result = reviewServiceImpl.findById(reviewId);
 
         assertEquals(optionalReview, result);
         verify(reviewRepository, times(1)).findById(reviewId);
@@ -52,7 +52,7 @@ class ReviewServiceTest {
 
         when(reviewRepository.findAll()).thenReturn(reviews);
 
-        List<Review> result = reviewService.getAll();
+        List<Review> result = reviewServiceImpl.getAll();
 
         assertEquals(reviews, result);
         verify(reviewRepository, times(1)).findAll();
@@ -65,7 +65,7 @@ class ReviewServiceTest {
 
         when(reviewRepository.save(any(Review.class))).thenReturn(review);
 
-        Review result = reviewService.save(review);
+        Review result = reviewServiceImpl.save(review);
 
         assertEquals(review, result);
         verify(reviewRepository, times(1)).save(review);
@@ -78,7 +78,7 @@ class ReviewServiceTest {
 
         doNothing().when(reviewRepository).deleteById(reviewId);
 
-        reviewService.deleteById(reviewId);
+        reviewServiceImpl.deleteById(reviewId);
 
         verify(reviewRepository, times(1)).deleteById(reviewId);
         verifyNoMoreInteractions(reviewRepository);

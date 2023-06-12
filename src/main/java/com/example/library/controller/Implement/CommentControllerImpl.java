@@ -1,7 +1,8 @@
 package com.example.library.controller.Implement;
 
+import com.example.library.controller.Interface.CommentController;
 import com.example.library.entity.Comment;
-import com.example.library.service.Implement.CommentService;
+import com.example.library.service.Implement.CommentServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,14 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/comments")
-public class CommentController implements com.example.library.controller.Interface.CommentController {
+public class CommentControllerImpl implements CommentController {
 
-    private final CommentService commentService;
-    private final Logger logger = LoggerFactory.getLogger(CommentController.class);
+    private final CommentServiceImpl commentServiceImpl;
+    private final Logger logger = LoggerFactory.getLogger(CommentControllerImpl.class);
 
     @Autowired
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
+    public CommentControllerImpl(CommentServiceImpl commentServiceImpl) {
+        this.commentServiceImpl = commentServiceImpl;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class CommentController implements com.example.library.controller.Interfa
     public ResponseEntity<List<Comment>> getAllComments() {
         logger.info("Getting all comments");
         try {
-            List<Comment> comments = commentService.getAll();
+            List<Comment> comments = commentServiceImpl.getAll();
             return ResponseEntity.ok(comments);
         } catch (Exception e) {
             logger.error("Error occurred while getting all comments", e);
@@ -42,7 +43,7 @@ public class CommentController implements com.example.library.controller.Interfa
     public ResponseEntity<Optional<Comment>> getCommentById(@PathVariable Long id) {
         logger.info("Getting comment by ID: {}", id);
         try {
-            Optional<Comment> comment = commentService.findById(id);
+            Optional<Comment> comment = commentServiceImpl.findById(id);
             if (comment.isPresent()) {
                 return ResponseEntity.ok(comment);
             } else {
@@ -59,7 +60,7 @@ public class CommentController implements com.example.library.controller.Interfa
     public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
         logger.info("Creating a new comment: {}", comment);
         try {
-            Comment createdComment = commentService.save(comment);
+            Comment createdComment = commentServiceImpl.save(comment);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
         } catch (Exception e) {
             logger.error("Error occurred while creating a comment: {}", comment, e);
@@ -72,7 +73,7 @@ public class CommentController implements com.example.library.controller.Interfa
     public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
         logger.info("Deleting comment with ID: {}", id);
         try {
-            commentService.deleteById(id);
+            commentServiceImpl.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             logger.error("Error occurred while deleting comment with ID: {}", id, e);
