@@ -1,6 +1,7 @@
 package com.example.library.service.Interface;
 
 import com.example.library.entity.Book;
+import com.example.library.entity.Review;
 import com.example.library.repository.Interface.BooksRepository;
 
 import java.util.List;

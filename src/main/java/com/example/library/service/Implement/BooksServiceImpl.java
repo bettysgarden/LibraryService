@@ -1,8 +1,8 @@
 package com.example.library.service.Implement;
 
 import com.example.library.entity.Book;
+import com.example.library.entity.Review;
 import com.example.library.repository.Interface.BooksRepository;
-import com.example.library.repository.Interface.ReviewRepository;
 import com.example.library.service.Interface.BooksService;
 import com.example.library.service.Interface.ReviewService;
 import org.slf4j.Logger;

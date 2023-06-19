@@ -1,6 +1,7 @@
 package com.example.library.service.Implement;
 
 import com.example.library.entity.Book;
+import com.example.library.entity.Comment;
 import com.example.library.entity.Review;
 import com.example.library.repository.Interface.ReviewRepository;
 import org.slf4j.Logger;
@@ -90,6 +91,15 @@ public class ReviewServiceImpl implements com.example.library.service.Interface.
     }
 
     @Override
+    public List<Comment> getCommentsForReview(Review review) {
+        try {
+            return reviewRepository.getCommentsForReview(review);
+        } catch (Exception e) {
+            logger.error("Failed to retrieve reviews for book: {}", review.getId(), e);
+            throw e;
+        }
+    }
+    @Override
     public List<Review> getReviewsForBook(Book book) {
         try {
             return reviewRepository.getReviewsForBook(book);
@@ -98,6 +108,5 @@ public class ReviewServiceImpl implements com.example.library.service.Interface.
             throw e;
         }
     }
-
 }
 

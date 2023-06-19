@@ -1,7 +1,7 @@
 package com.example.library.controller.Implement;
 
 import com.example.library.controller.Interface.ReviewController;
-import com.example.library.entity.Book;
+import com.example.library.entity.Comment;
 import com.example.library.entity.Review;
 import com.example.library.service.Implement.ReviewServiceImpl;
 import org.slf4j.Logger;
@@ -81,16 +81,16 @@ public class ReviewControllerImpl implements ReviewController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @GetMapping("/book/{bookId}")
-    public ResponseEntity<List<Review>> getReviewsForBook(@PathVariable Long bookId) {
-        logger.info("Getting reviews for book with ID: {}", bookId);
+    @GetMapping("/review/{reviewId}")
+    public ResponseEntity<List<Comment>> getCommentsForReview(@PathVariable Long reviewId) {
+        logger.info("Getting comments for review with ID: {}", reviewId);
         try {
-            Book book = new Book();
-            book.setId(bookId);
-            List<Review> reviews = reviewServiceImpl.getReviewsForBook(book);
-            return ResponseEntity.ok(reviews);
+            Review review = new Review();
+            review.setId(reviewId);
+            List<Comment> comments = reviewServiceImpl.getCommentsForReview(review);
+            return ResponseEntity.ok(comments);
         } catch (Exception e) {
-            logger.error("Error occurred while getting reviews for book with ID: {}", bookId, e);
+            logger.error("Error occurred while getting reviews for book with ID: {}", reviewId, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

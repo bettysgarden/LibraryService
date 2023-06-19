@@ -1,77 +1,95 @@
-
-
-CREATE TABLE IF NOT EXISTS Book
+create table author
 (
-    idBook         SERIAL8,
-    title          VARCHAR(100)   NOT NULL,
-    rating         INT DEFAULT 0,
-    date_published timestamp,
-    description    VARCHAR(10000) NOT NULL,
-    PRIMARY KEY (idBook)
+    id          bigint         default nextval('author_idauthor_seq'::regclass) not null
+        primary key,
+    name        varchar(255)                                                    not null,
+    website     varchar(255)   default NULL::character varying,
+    description varchar(10000) default NULL::character varying
 );
-
-CREATE TABLE IF NOT EXISTS Genre
+create table author_has_book
 (
-    idGenre SERIAL8,
-    title   VARCHAR(45) NOT NULL,
-    PRIMARY KEY (idGenre)
+    author_idauthor bigint not null
+        constraint fk_author_has_book_author1
+        references author (id),
+    book_idbook     bigint not null
+        constraint fk_author_has_book_book1
+        references book (id),
+    primary key (author_idauthor, book_idbook)
 );
-
-CREATE TABLE IF NOT EXISTS Book_has_Genre
+create table book
 (
-    Book_idBook   INT NOT NULL,
-    Genre_idGenre INT NOT NULL,
-    PRIMARY KEY (Book_idBook, Genre_idGenre),
-    FOREIGN KEY (Book_idBook) REFERENCES Book (idBook) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    FOREIGN KEY (Genre_idGenre) REFERENCES Genre (idGenre) ON DELETE NO ACTION ON UPDATE NO ACTION
+    id                    bigint  default nextval('book_idbook_seq'::regclass) not null
+        primary key,
+    title                 varchar(255)                                         not null,
+    rating                integer default 0,
+    description           varchar(10000),
+    cover_url             varchar(255),
+    publisher_idpublisher bigint
+        references publisher
+            on delete cascade,
+    year_published        integer
+        constraint book_date_published_check
+        check ((year_published)::numeric <= EXTRACT(year FROM now())),
+    cover_url_m           varchar(255),
+    cover_url_l           varchar(255),
+    isbn                  text
 );
-
-CREATE TABLE IF NOT EXISTS Review
+create table book_has_genre
 (
-    idReview    SERIAL8,
-    Rating      INT         NOT NULL,
-    Content     VARCHAR(45) NOT NULL,
-    TimeAdded   TIMESTAMP DEFAULT current_timestamp,
-    Book_idBook INT         NOT NULL,
-    PRIMARY KEY (idReview),
-    CONSTRAINT fk_Review_Book1 FOREIGN KEY (Book_idBook) REFERENCES Book (idBook) ON DELETE NO ACTION ON UPDATE NO ACTION
+    book_idbook   bigint not null
+        references book (id),
+    genre_idgenre bigint not null
+        references genre (id),
+    primary key (book_idbook, genre_idgenre)
 );
-
-CREATE TABLE IF NOT EXISTS Comment
+create table comment
 (
-    idComment       SERIAL8,
-    content         VARCHAR(1000) NOT NULL,
-    TimeAdded       TIMESTAMP DEFAULT current_timestamp,
-    review_idReview INT       DEFAULT NULL,
-    PRIMARY KEY (idComment),
---     PRIMARY KEY (article_idArticle),
-    FOREIGN KEY (review_idReview) REFERENCES review (idReview) ON DELETE CASCADE ON UPDATE NO ACTION
+    id              bigint       default nextval('comment_idcomment_seq'::regclass) not null
+        primary key,
+    content         varchar(255)                                                    not null,
+    timeadded       timestamp(6) default CURRENT_TIMESTAMP,
+    review_idreview bigint
+        references review
+            on delete cascade,
+    user_iduser     bigint
+        references "user"
+            on update cascade on delete cascade
 );
-
-CREATE TABLE IF NOT EXISTS Author
+create table genre
 (
-    idAuthor    SERIAL8,
-    Name        VARCHAR(45) NOT NULL,
-    Surname     VARCHAR(45) NOT NULL,
-    Website     VARCHAR(45) DEFAULT NULL,
-    Description VARCHAR(45) DEFAULT NULL,
-    PRIMARY KEY (idAuthor)
+    id    bigint default nextval('genre_idgenre_seq'::regclass) not null
+        primary key,
+    title varchar(255)                                          not null
 );
-
-CREATE TABLE IF NOT EXISTS Author_has_Book
+create table publisher
 (
-    Author_idAuthor INT NOT NULL,
-    Book_idBook     INT NOT NULL,
-
-    PRIMARY KEY (Author_idAuthor, Book_idBook),
-    CONSTRAINT fk_Author_has_Book_Author1
-        FOREIGN KEY (Author_idAuthor)
-            REFERENCES Author (idAuthor)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
-    CONSTRAINT fk_Author_has_Book_Book1
-        FOREIGN KEY (Book_idBook)
-            REFERENCES Book (idBook)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION
+    id    bigint default nextval('publisher_idpublisher_seq'::regclass) not null
+        primary key,
+    title varchar(255)                                                  not null
+        unique
+);
+create table review
+(
+    id          bigint       default nextval('review_idreview_seq'::regclass) not null
+        primary key,
+    rating      integer                                                       not null,
+    content     varchar(10000),
+    timeadded   timestamp(6) default CURRENT_TIMESTAMP,
+    book_idbook bigint                                                        not null
+        constraint fk_review_book1
+        references book,
+    user_iduser bigint
+        references "user"
+);
+create table "user"
+(
+    id       integer default nextval('userid_seq'::regclass) not null
+        primary key,
+    age      integer
+        constraint real_age
+        check (age >= 0),
+    location text,
+    password text                                            not null,
+    username varchar(255)                                    not null
+        unique
 );

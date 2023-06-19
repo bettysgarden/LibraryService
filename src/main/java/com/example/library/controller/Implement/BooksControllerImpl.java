@@ -2,7 +2,9 @@ package com.example.library.controller.Implement;
 
 import com.example.library.controller.Interface.BooksController;
 import com.example.library.entity.Book;
+import com.example.library.entity.Review;
 import com.example.library.service.Implement.BooksServiceImpl;
+import com.example.library.service.Implement.ReviewServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +19,14 @@ import java.util.Optional;
 @RequestMapping("/api/books")
 public class BooksControllerImpl implements BooksController {
 
-    private final BooksServiceImpl bookService;
+    @Autowired
+    private  BooksServiceImpl bookService;
+    @Autowired
+    private  ReviewServiceImpl reviewService;
 
     private final Logger logger = LoggerFactory.getLogger(BooksControllerImpl.class);
 
-    @Autowired
-    public BooksControllerImpl(BooksServiceImpl bookService) {
-        this.bookService = bookService;
-    }
+
 
     @Override
     @GetMapping
@@ -81,5 +83,17 @@ public class BooksControllerImpl implements BooksController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
+    @GetMapping("/reviews/{bookId}")
+    public ResponseEntity<List<Review>> getReviewsForBook(@PathVariable Long bookId) {
+        logger.info("Getting reviews for book with ID: {}", bookId);
+        try {
+            Book book = new Book();
+            book.setId(bookId);
+            List<Review> reviews = reviewService.getReviewsForBook(book);
+            return ResponseEntity.ok(reviews);
+        } catch (Exception e) {
+            logger.error("Error occurred while getting reviews for book with ID: {}", bookId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
