@@ -2,18 +2,6 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
-
-<!--    <changeSet id="1" author="your-name">-->
-<!--        <createTable tableName="book">-->
-<!--            <column name="id" type="BIGINT">-->
-<!--                <constraints primaryKey="true" nullable="false"/>-->
-<!--            </column>-->
-<!--            <column name="title" type="VARCHAR(255)">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
-<!--            &lt;!&ndash; Add more columns or modifications as needed &ndash;&gt;-->
-<!--        </createTable>-->
-<!--    </changeSet>-->
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
 
 </databaseChangeLog>
