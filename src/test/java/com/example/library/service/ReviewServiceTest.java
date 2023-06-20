@@ -32,7 +32,7 @@ class ReviewServiceTest {
     @Test
     void findById() {
         Long reviewId = 1L;
-        Review review = new Review(5,"Example Review");
+        Review review = new Review(5.0,"Example Review");
         Optional<Review> optionalReview = Optional.of(review);
 
         when(reviewRepository.findById(reviewId)).thenReturn(optionalReview);
@@ -47,8 +47,8 @@ class ReviewServiceTest {
     @Test
     void getAll() {
         List<Review> reviews = new ArrayList<>();
-        reviews.add(new Review(5, "Review 1"));
-        reviews.add(new Review(5, "Review 2"));
+        reviews.add(new Review(5.0, "Review 1"));
+        reviews.add(new Review(5.0, "Review 2"));
 
         when(reviewRepository.findAll()).thenReturn(reviews);
 
@@ -61,7 +61,7 @@ class ReviewServiceTest {
 
     @Test
     void save() {
-        Review review = new Review(5, "Example Review");
+        Review review = new Review(5.0, "Example Review");
 
         when(reviewRepository.save(any(Review.class))).thenReturn(review);
 

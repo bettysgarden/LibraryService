@@ -1,7 +1,6 @@
 package com.example.library.service.Implement;
 
 import com.example.library.entity.Book;
-import com.example.library.entity.Review;
 import com.example.library.repository.Interface.BooksRepository;
 import com.example.library.service.Interface.BooksService;
 import com.example.library.service.Interface.ReviewService;
@@ -21,14 +20,16 @@ public class BooksServiceImpl implements BooksService {
     @Autowired
     private BooksRepository booksRepository;
 
+    private ReviewServiceImpl reviewService;
     @Autowired
-    private ReviewService reviewService;
+    public void setReviewService(ReviewServiceImpl reviewService) {
+        this.reviewService = reviewService;
+    }
 
-    @Override
+    @Autowired
     public void setBooksRepository(BooksRepository booksRepository) {
         this.booksRepository = booksRepository;
     }
-
     @Override
     public Optional<Book> findById(long id) {
         logger.debug("inside findById() method");

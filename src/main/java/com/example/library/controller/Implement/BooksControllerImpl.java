@@ -21,11 +21,21 @@ public class BooksControllerImpl implements BooksController {
 
     @Autowired
     private  BooksServiceImpl bookService;
+
     @Autowired
     private  ReviewServiceImpl reviewService;
 
     private final Logger logger = LoggerFactory.getLogger(BooksControllerImpl.class);
 
+    @Override
+    public void setBooksService(BooksServiceImpl booksService) {
+        this.bookService = booksService;
+    }
+
+    @Override
+    public void setReviewService(ReviewServiceImpl reviewService) {
+        this.reviewService = reviewService;
+    }
 
 
     @Override

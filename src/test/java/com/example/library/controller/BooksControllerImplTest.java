@@ -3,6 +3,7 @@ package com.example.library.controller;
 import com.example.library.controller.Implement.BooksControllerImpl;
 import com.example.library.entity.Book;
 import com.example.library.service.Implement.BooksServiceImpl;
+import com.example.library.service.Implement.ReviewServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,16 +26,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BooksControllerImplTest {
     private MockMvc mockMvc;
     @InjectMocks
-    private BooksControllerImpl booksControllerImpl;
+    private BooksControllerImpl booksController;
 
     @Mock
-    private BooksServiceImpl booksServiceImpl;
+    private BooksServiceImpl booksService;
+
+    @Mock
+    private ReviewServiceImpl reviewService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        booksControllerImpl = new BooksControllerImpl(booksServiceImpl);
-        mockMvc = MockMvcBuilders.standaloneSetup(booksControllerImpl).build();
+        booksController.setBooksService(booksService);
+        booksController.setReviewService(reviewService);
+        mockMvc = MockMvcBuilders.standaloneSetup(booksController).build();
     }
 
     @Test
@@ -43,26 +48,26 @@ class BooksControllerImplTest {
                 new Book(1L, "Title 1", 2023, "Description 1", "Cover 1"),
                 new Book(2L, "Title 2", 2023, "Description 1", "Cover 1")
         );
-        when(booksServiceImpl.getAll()).thenReturn(books);
+        when(booksService.getAll()).thenReturn(books);
 
-        ResponseEntity<List<Book>> response = booksControllerImpl.getAllBooks();
+        ResponseEntity<List<Book>> response = booksController.getAllBooks();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(books, response.getBody());
-        verify(booksServiceImpl, times(1)).getAll();
+        verify(booksService, times(1)).getAll();
     }
 
     @Test
     void getBookById_NotFound() throws Exception {
         Long bookId = 1L;
 
-        when(booksServiceImpl.findById(bookId)).thenReturn(Optional.empty());
+        when(booksService.findById(bookId)).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/api/books/{id}", bookId))
                 .andExpect(status().isNotFound());
 
-        verify(booksServiceImpl, times(1)).findById(bookId);
-        verifyNoMoreInteractions(booksServiceImpl);
+        verify(booksService, times(1)).findById(bookId);
+        verifyNoMoreInteractions(booksService);
     }
 
     @Test
@@ -70,35 +75,35 @@ class BooksControllerImplTest {
         Long bookId = 1L;
         Book book = new Book(1L, "Title 1", 2023, "Description 1", "Cover 1");
         Optional<Book> optionalBook = Optional.of(book);
-        when(booksServiceImpl.findById(bookId)).thenReturn(optionalBook);
+        when(booksService.findById(bookId)).thenReturn(optionalBook);
 
-        ResponseEntity<Optional<Book>> response = booksControllerImpl.getBookById(bookId);
+        ResponseEntity<Optional<Book>> response = booksController.getBookById(bookId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(optionalBook, response.getBody());
-        verify(booksServiceImpl, times(1)).findById(bookId);
+        verify(booksService, times(1)).findById(bookId);
     }
 
     @Test
     void testCreateBook() {
         Book book = new Book(1L, "Title 1", 2023, "Description 1", "Cover 1");
-        when(booksServiceImpl.save(book)).thenReturn(book);
+        when(booksService.save(book)).thenReturn(book);
 
-        ResponseEntity<Book> response = booksControllerImpl.createBook(book);
+        ResponseEntity<Book> response = booksController.createBook(book);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(book, response.getBody());
-        verify(booksServiceImpl, times(1)).save(book);
+        verify(booksService, times(1)).save(book);
     }
 
     @Test
     void testDeleteBook() {
         Long bookId = 1L;
 
-        ResponseEntity<Void> response = booksControllerImpl.deleteBook(bookId);
+        ResponseEntity<Void> response = booksController.deleteBook(bookId);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        verify(booksServiceImpl, times(1)).deleteById(bookId);
+        verify(booksService, times(1)).deleteById(bookId);
     }
 }
 
