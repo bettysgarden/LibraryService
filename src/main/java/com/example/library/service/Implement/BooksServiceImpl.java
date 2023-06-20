@@ -17,7 +17,6 @@ import java.util.Optional;
 public class BooksServiceImpl implements BooksService {
     private static final Logger logger = LoggerFactory.getLogger(BooksServiceImpl.class);
 
-    @Autowired
     private BooksRepository booksRepository;
 
     private ReviewServiceImpl reviewService;
