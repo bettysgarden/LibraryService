@@ -1,12 +1,25 @@
 package com.example.library.entity;
 
+import com.example.library.enums.Role;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
 @Entity
 @Table(name = "reader")
-public class User {
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -30,8 +43,13 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    public User() {
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, age, location, username, password, reviews, comments, role);
     }
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public User(Integer age, String location, String username, String password) {
         this.age = age;
@@ -56,6 +74,14 @@ public class User {
         this.id = id;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public Integer getAge() {
         return age;
     }
@@ -70,10 +96,6 @@ public class User {
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public void setUsername(String username) {
@@ -112,23 +134,45 @@ public class User {
                 ", location='" + location + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) &&
-                Objects.equals(age, user.age) &&
-                Objects.equals(location, user.location) &&
-                Objects.equals(username, user.username) &&
-                Objects.equals(password, user.password);
+        return Objects.equals(id, user.id) && Objects.equals(age, user.age) && Objects.equals(location, user.location) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(reviews, user.reviews) && Objects.equals(comments, user.comments) && role == user.role;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id, age, location, username, password);
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

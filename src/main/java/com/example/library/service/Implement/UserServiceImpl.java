@@ -1,11 +1,14 @@
 package com.example.library.service.Implement;
 
 import com.example.library.entity.User;
+import com.example.library.exception.ResourceNotFoundException;
 import com.example.library.repository.Interface.UserRepository;
 import com.example.library.service.Interface.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +36,49 @@ public class UserServiceImpl implements UserService {
             throw e;
         }
     }
+
+    @Override
+    public User findByUsername(String username) {
+        logger.debug("inside findByUsername() method");
+        try {
+            return userRepository.findUserByUsername(username)
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        } catch (Exception e) {
+            logger.error("Error occurred while finding user by username: {}", username, e);
+            throw e;
+        }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        logger.debug("Inside loadUserByUsername() method");
+        try {
+            User user = userRepository.findUserByUsername(username)
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+            // Perform the conversion from User to UserDetails
+            UserDetails userDetails = convertToUserDetails(user);
+
+            return userDetails;
+        } catch (Exception e) {
+            logger.error("Error occurred while finding user by username: {}", username, e);
+            throw new UsernameNotFoundException("User not found", e);
+        }
+    }
+
+    private UserDetails convertToUserDetails(User user) {
+        // Perform the necessary conversion logic here
+        // Create and return an instance of UserDetails, e.g., using org.springframework.security.core.userdetails.User
+
+        UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .roles("ROLE_USER")  // Set the user roles as needed
+                .build();
+
+        return userDetails;
+    }
+
 
     @Override
     public List<User> getAll() {
