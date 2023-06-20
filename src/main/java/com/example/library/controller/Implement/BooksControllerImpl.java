@@ -18,16 +18,21 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/books")
 public class BooksControllerImpl implements BooksController {
-
-    @Autowired
     private  BooksServiceImpl bookService;
-    @Autowired
+
     private  ReviewServiceImpl reviewService;
 
     private final Logger logger = LoggerFactory.getLogger(BooksControllerImpl.class);
 
+    @Autowired
+    public void setBooksService(BooksServiceImpl booksService) {
+        this.bookService = booksService;
+    }
 
-
+    @Autowired
+    public void setReviewService(ReviewServiceImpl reviewService) {
+        this.reviewService = reviewService;
+    }
     @Override
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {

@@ -18,13 +18,16 @@ import java.util.Optional;
 public class BooksServiceImpl implements BooksService {
     private static final Logger logger = LoggerFactory.getLogger(BooksServiceImpl.class);
 
-    @Autowired
     private BooksRepository booksRepository;
 
-    @Autowired
-    private ReviewService reviewService;
+    private ReviewServiceImpl reviewService;
 
-    @Override
+    @Autowired
+    public void setReviewService(ReviewServiceImpl reviewService) {
+        this.reviewService = reviewService;
+    }
+
+    @Autowired
     public void setBooksRepository(BooksRepository booksRepository) {
         this.booksRepository = booksRepository;
     }
