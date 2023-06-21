@@ -3,6 +3,10 @@ package com.example.library.controller.Implement;
 import com.example.library.controller.Interface.CommentController;
 import com.example.library.entity.Comment;
 import com.example.library.service.Implement.CommentServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/comments")
+@Tag(name = "Comments", description = "The Comment API")
 public class CommentControllerImpl implements CommentController {
 
     private final CommentServiceImpl commentServiceImpl;
@@ -25,7 +30,11 @@ public class CommentControllerImpl implements CommentController {
         this.commentServiceImpl = commentServiceImpl;
     }
 
-    @Override
+    @Operation(summary = "Get all comments", tags = "comments")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved comments"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping
     public ResponseEntity<List<Comment>> getAllComments() {
         logger.info("Getting all comments");
@@ -38,7 +47,12 @@ public class CommentControllerImpl implements CommentController {
         }
     }
 
-    @Override
+    @Operation(summary = "Get a comment by ID", tags = "comments")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the comment"),
+            @ApiResponse(responseCode = "404", description = "Comment not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Comment>> getCommentById(@PathVariable Long id) {
         logger.info("Getting comment by ID: {}", id);
@@ -55,7 +69,11 @@ public class CommentControllerImpl implements CommentController {
         }
     }
 
-    @Override
+    @Operation(summary = "Create a new comment", tags = "comments")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully created the comment"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PostMapping
     public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
         logger.info("Creating a new comment: {}", comment);
@@ -68,7 +86,11 @@ public class CommentControllerImpl implements CommentController {
         }
     }
 
-    @Override
+    @Operation(summary = "Delete a comment by ID", tags = "comments")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successfully deleted the comment"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
         logger.info("Deleting comment with ID: {}", id);

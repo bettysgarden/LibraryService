@@ -4,6 +4,10 @@ import com.example.library.controller.Interface.ReviewController;
 import com.example.library.entity.Comment;
 import com.example.library.entity.Review;
 import com.example.library.service.Implement.ReviewServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/reviews")
+@Tag(name = "Reviews", description = "The Review API")
 public class ReviewControllerImpl implements ReviewController {
 
     private final ReviewServiceImpl reviewServiceImpl;
@@ -26,7 +31,11 @@ public class ReviewControllerImpl implements ReviewController {
         this.reviewServiceImpl = reviewServiceImpl;
     }
 
-    @Override
+    @Operation(summary = "Get all reviews", tags = "reviews")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved reviews"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping
     public ResponseEntity<List<Review>> getAllReviews() {
         logger.info("Getting all reviews");
@@ -39,7 +48,12 @@ public class ReviewControllerImpl implements ReviewController {
         }
     }
 
-    @Override
+    @Operation(summary = "Get a review by ID", tags = "reviews")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the review"),
+            @ApiResponse(responseCode = "404", description = "Review not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Review>> getReviewById(@PathVariable Long id) {
         logger.info("Getting review by ID: {}", id);
@@ -56,7 +70,11 @@ public class ReviewControllerImpl implements ReviewController {
         }
     }
 
-    @Override
+    @Operation(summary = "Create a new review", tags = "reviews")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully created the review"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PostMapping
     public ResponseEntity<Review> createReview(@RequestBody Review review) {
         logger.info("Creating a new review: {}", review);
@@ -69,7 +87,11 @@ public class ReviewControllerImpl implements ReviewController {
         }
     }
 
-    @Override
+    @Operation(summary = "Delete a review by ID", tags = "reviews")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successfully deleted the review"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
         logger.info("Deleting review with ID: {}", id);
@@ -81,6 +103,12 @@ public class ReviewControllerImpl implements ReviewController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @Operation(summary = "Get comments for a review", tags = "reviews")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved comments for the review"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/review/{reviewId}")
     public ResponseEntity<List<Comment>> getCommentsForReview(@PathVariable Long reviewId) {
         logger.info("Getting comments for review with ID: {}", reviewId);

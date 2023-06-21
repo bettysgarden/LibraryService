@@ -21,35 +21,13 @@ public class SwaggerConfig {
     @Value("${application-version}")
     private String appVersion;
 
-    @Bean
-    public GroupedOpenApi usersApi() {
-        return GroupedOpenApi.builder()
-                .group("Users")
-                .pathsToMatch("/api/users/**")
-                .build();
-    }
-
-    @Bean
-    public GroupedOpenApi booksApi() {
-        return GroupedOpenApi.builder()
-                .group("Books")
-                .pathsToMatch("/api/books/**")
-                .build();
-    }
-    @Bean
-    public GroupedOpenApi authorsApi() {
-        return GroupedOpenApi.builder()
-                .group("Authors")
-                .pathsToMatch("/api/authors/**")
-                .build();
-    }
-    @Bean
-    public GroupedOpenApi commentsApi() {
-        return GroupedOpenApi.builder()
-                .group("Comments")
-                .pathsToMatch("/api/comments/**")
-                .build();
-    }
+@Bean
+public GroupedOpenApi allApis() {
+    return GroupedOpenApi.builder()
+            .group("All APIs")
+            .pathsToMatch("/api/**")
+            .build();
+}
 
     @Bean
     public OpenAPI customOpenApi() {
