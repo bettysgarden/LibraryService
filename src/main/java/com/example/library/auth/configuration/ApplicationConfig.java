@@ -1,34 +1,43 @@
 package com.example.library.auth.configuration;
 
-import com.example.library.exception.ResourceNotFoundException;
 import com.example.library.repository.Interface.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
+@ComponentScan
 public class ApplicationConfig {
+    @Value("${application-description}")
+    private String appDescription;
+
+    @Value("${application-version}")
+    private String appVersion;
 
     private final UserRepository userRepository;
 
-    @Autowired
     public ApplicationConfig(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return username -> userRepository.findByUsername(username);
     }
 
     @Bean
@@ -49,9 +58,25 @@ public class ApplicationConfig {
         return config.getAuthenticationManager();
     }
 
-    // You may need to configure AuthenticationManagerBuilder based on your requirements
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+    @Bean
+    public OpenAPI openAPI() {
+        return new OpenAPI()
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+                .components(
+                        new Components()
+                                .addSecuritySchemes("bearerAuth",
+                                        new SecurityScheme()
+                                                .type(SecurityScheme.Type.HTTP)
+                                                .scheme("bearer")
+                                                .bearerFormat("JWT")
+                                )
+                )
+                .info(new Info()
+                        .title("Library API")
+                        .version(appVersion)
+                        .description(appDescription)
+                        .license(new License().name("Apache 2.0").url("https://www.apache.org/licenses/LICENSE-2.0.html"))
+                        .contact(new Contact().name("Your Name").email("your-email@example.com")));
+
     }
 }

@@ -1,7 +1,6 @@
 package com.example.library.service.Implement;
 
 import com.example.library.entity.User;
-import com.example.library.exception.ResourceNotFoundException;
 import com.example.library.repository.Interface.UserRepository;
 import com.example.library.service.Interface.UserService;
 import org.slf4j.Logger;
@@ -9,12 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.HashSet;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -49,15 +46,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private User findUserByUsername(String username) {
-        return userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-    }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         logger.debug("Inside loadUserByUsername() method");
         try {
-            User user = findUserByUsername(username);
+            User user = userRepository.findByUsername(username);
 
             // Perform the conversion from User to UserDetails
             UserDetails userDetails = convertToUserDetails(user);

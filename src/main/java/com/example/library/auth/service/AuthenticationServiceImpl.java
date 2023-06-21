@@ -5,7 +5,6 @@ import com.example.library.auth.entity.AuthenticationResponse;
 import com.example.library.entity.User;
 import com.example.library.auth.entity.RegisterRequest;
 import com.example.library.repository.Interface.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +18,6 @@ public class AuthenticationServiceImpl {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    @Autowired
     public AuthenticationServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -49,7 +47,7 @@ public class AuthenticationServiceImpl {
                         request.getPassword()
                 )
         );
-        var user = userRepository.findUserByUsername(request.getUsername()).orElseThrow();
+        var user = userRepository.findByUsername(request.getUsername());
         var jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponse.builder()
