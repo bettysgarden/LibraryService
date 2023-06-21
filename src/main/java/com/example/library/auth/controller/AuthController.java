@@ -6,6 +6,7 @@ import com.example.library.auth.entity.RegisterRequest;
 import com.example.library.auth.service.AuthenticationServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheConfig;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/auth")
-
+@Tag(name = "Auth")
 public class AuthController {
     Logger log = LoggerFactory.getLogger(AuthController.class);
     private final AuthenticationServiceImpl authenticationService;

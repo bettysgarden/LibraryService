@@ -42,12 +42,6 @@ public class BooksControllerImpl implements BooksController {
         this.reviewService = reviewService;
     }
 
-
-    @Autowired
-    public void setReviewService(ReviewServiceImpl reviewService) {
-        this.reviewService = reviewService;
-    }
-
     @Override
     @Operation(summary = "Get all books")
     @ApiResponse(responseCode = "200", description = "OK")
