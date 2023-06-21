@@ -3,6 +3,10 @@ package com.example.library.controller.Implement;
 import com.example.library.controller.Interface.GenreController;
 import com.example.library.entity.Genre;
 import com.example.library.service.Implement.GenreServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/genres")
+@Tag(name = "Genres", description = "The Genre API")
 public class GenreControllerImpl implements GenreController {
 
     private final GenreServiceImpl genreServiceImpl;
@@ -25,7 +30,11 @@ public class GenreControllerImpl implements GenreController {
         this.genreServiceImpl = genreServiceImpl;
     }
 
-    @Override
+    @Operation(summary = "Get all genres", tags = "genres")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved genres"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping
     public ResponseEntity<List<Genre>> getAllGenres() {
         logger.info("Getting all genres");
@@ -38,7 +47,12 @@ public class GenreControllerImpl implements GenreController {
         }
     }
 
-    @Override
+    @Operation(summary = "Get a genre by ID", tags = "genres")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the genre"),
+            @ApiResponse(responseCode = "404", description = "Genre not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Genre>> getGenreById(@PathVariable Long id) {
         logger.info("Getting genre by ID: {}", id);
@@ -55,7 +69,11 @@ public class GenreControllerImpl implements GenreController {
         }
     }
 
-    @Override
+    @Operation(summary = "Create a new genre", tags = "genres")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully created the genre"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PostMapping
     public ResponseEntity<Genre> createGenre(@RequestBody Genre genre) {
         logger.info("Creating a new genre: {}", genre);
@@ -68,7 +86,11 @@ public class GenreControllerImpl implements GenreController {
         }
     }
 
-    @Override
+    @Operation(summary = "Delete a genre by ID", tags = "genres")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successfully deleted the genre"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteGenre(@PathVariable Long id) {
         logger.info("Deleting genre with ID: {}", id);

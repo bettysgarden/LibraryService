@@ -123,39 +123,47 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.2.12</version>
+        </dependency>
+
 
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Spring Boot Maven Plugin -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
+<!--            &lt;!&ndash; Spring Boot Maven Plugin &ndash;&gt;-->
 <!--            <plugin>-->
-<!--                <groupId>org.liquibase</groupId>-->
-<!--                <artifactId>liquibase-maven-plugin</artifactId>-->
-<!--                <version>3.8.1</version>-->
-<!--                <configuration>-->
-<!--                    <propertyFile>${project.build.outputDirectory}/liquibase-maven-plugin.properties</propertyFile>-->
-<!--                    <logging>info</logging>-->
-<!--                </configuration>-->
-<!--                <dependencies>-->
-<!--                    &lt;!&ndash; https://mvnrepository.com/artifact/org.liquibase.ext/liquibase-hibernate5 &ndash;&gt;-->
-<!--                    <dependency>-->
-<!--                        <groupId>org.liquibase.ext</groupId>-->
-<!--                        <artifactId>liquibase-hibernate5</artifactId>-->
-<!--                        <version>4.22.0</version>-->
-<!--                        <scope>runtime</scope>-->
-<!--                    </dependency>-->
-
-<!--                    <dependency>-->
-<!--                        <groupId>org.springframework.boot</groupId>-->
-<!--                        <artifactId>spring-boot-starter-data-jpa</artifactId>-->
-<!--                    </dependency>-->
-<!--                </dependencies>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
 <!--            </plugin>-->
+            <plugin>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                <version>0.3</version>
+                <executions>
+                    <execution>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <apiDocsUrl>http://localhost:8085/v3/api-docs</apiDocsUrl>
+                    <outputFileName>openapi.yaml</outputFileName>
+                    <outputDir>${project.build.directory}</outputDir>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

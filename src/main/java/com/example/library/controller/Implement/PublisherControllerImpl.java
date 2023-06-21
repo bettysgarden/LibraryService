@@ -1,8 +1,11 @@
 package com.example.library.controller.Implement;
-
 import com.example.library.controller.Interface.PublisherController;
 import com.example.library.entity.Publisher;
 import com.example.library.service.Implement.PublisherServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/publishers")
+@Tag(name = "Publishers", description = "The Publisher API")
 public class PublisherControllerImpl implements PublisherController {
 
     private final PublisherServiceImpl publisherServiceImpl;
@@ -25,7 +29,11 @@ public class PublisherControllerImpl implements PublisherController {
         this.publisherServiceImpl = publisherServiceImpl;
     }
 
-    @Override
+    @Operation(summary = "Get all publishers", tags = "publishers")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved publishers"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping
     public ResponseEntity<List<Publisher>> getAllPublishers() {
         logger.info("Getting all publishers");
@@ -38,7 +46,12 @@ public class PublisherControllerImpl implements PublisherController {
         }
     }
 
-    @Override
+    @Operation(summary = "Get a publisher by ID", tags = "publishers")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the publisher"),
+            @ApiResponse(responseCode = "404", description = "Publisher not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Publisher>> getPublisherById(@PathVariable Long id) {
         logger.info("Getting publisher by ID: {}", id);
@@ -55,7 +68,11 @@ public class PublisherControllerImpl implements PublisherController {
         }
     }
 
-    @Override
+    @Operation(summary = "Create a new publisher", tags = "publishers")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully created the publisher"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PostMapping
     public ResponseEntity<Publisher> createPublisher(@RequestBody Publisher publisher) {
         logger.info("Creating a new publisher: {}", publisher);
@@ -68,7 +85,11 @@ public class PublisherControllerImpl implements PublisherController {
         }
     }
 
-    @Override
+    @Operation(summary = "Delete a publisher by ID", tags = "publishers")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successfully deleted the publisher"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePublisher(@PathVariable Long id) {
         logger.info("Deleting publisher with ID: {}", id);
@@ -81,3 +102,4 @@ public class PublisherControllerImpl implements PublisherController {
         }
     }
 }
+
