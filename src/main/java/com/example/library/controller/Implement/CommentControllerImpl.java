@@ -30,7 +30,7 @@ public class CommentControllerImpl implements CommentController {
         this.commentServiceImpl = commentServiceImpl;
     }
 
-    @Operation(summary = "Get all comments", tags = "comments")
+    @Operation(summary = "Get all comments")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved comments"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -47,7 +47,7 @@ public class CommentControllerImpl implements CommentController {
         }
     }
 
-    @Operation(summary = "Get a comment by ID", tags = "comments")
+    @Operation(summary = "Get a comment by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the comment"),
             @ApiResponse(responseCode = "404", description = "Comment not found"),
@@ -69,7 +69,7 @@ public class CommentControllerImpl implements CommentController {
         }
     }
 
-    @Operation(summary = "Create a new comment", tags = "comments")
+    @Operation(summary = "Create a new comment")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully created the comment"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -86,7 +86,7 @@ public class CommentControllerImpl implements CommentController {
         }
     }
 
-    @Operation(summary = "Delete a comment by ID", tags = "comments")
+    @Operation(summary = "Delete a comment by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Successfully deleted the comment"),
             @ApiResponse(responseCode = "500", description = "Internal server error")

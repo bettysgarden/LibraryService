@@ -29,7 +29,7 @@ public class PublisherControllerImpl implements PublisherController {
         this.publisherServiceImpl = publisherServiceImpl;
     }
 
-    @Operation(summary = "Get all publishers", tags = "publishers")
+    @Operation(summary = "Get all publishers")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved publishers"),
             @ApiResponse(responseCode = "500", description = "Internal server error")

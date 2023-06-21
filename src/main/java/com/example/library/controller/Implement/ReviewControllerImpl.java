@@ -104,7 +104,7 @@ public class ReviewControllerImpl implements ReviewController {
         }
     }
 
-    @Operation(summary = "Get comments for a review", tags = "reviews")
+    @Operation(summary = "Get comments for a review")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved comments for the review"),
             @ApiResponse(responseCode = "500", description = "Internal server error")

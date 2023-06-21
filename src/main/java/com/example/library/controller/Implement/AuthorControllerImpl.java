@@ -30,7 +30,7 @@ public class AuthorControllerImpl implements AuthorController {
         this.authorServiceImpl = authorServiceImpl;
     }
 
-    @Operation(summary = "Get all authors", tags = "authors")
+    @Operation(summary = "Get all authors")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved authors"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -47,7 +47,7 @@ public class AuthorControllerImpl implements AuthorController {
         }
     }
 
-    @Operation(summary = "Get an author by ID", tags = "authors")
+    @Operation(summary = "Get an author by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the author"),
             @ApiResponse(responseCode = "404", description = "Author not found"),
@@ -65,7 +65,7 @@ public class AuthorControllerImpl implements AuthorController {
         }
     }
 
-    @Operation(summary = "Create a new author", tags = "authors")
+    @Operation(summary = "Create a new author")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully created the author"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -82,7 +82,7 @@ public class AuthorControllerImpl implements AuthorController {
         }
     }
 
-    @Operation(summary = "Delete an author by ID", tags = "authors")
+    @Operation(summary = "Delete an author by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Successfully deleted the author"),
             @ApiResponse(responseCode = "500", description = "Internal server error")

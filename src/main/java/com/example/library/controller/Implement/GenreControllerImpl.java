@@ -86,7 +86,7 @@ public class GenreControllerImpl implements GenreController {
         }
     }
 
-    @Operation(summary = "Delete a genre by ID", tags = "genres")
+    @Operation(summary = "Delete a genre by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Successfully deleted the genre"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
