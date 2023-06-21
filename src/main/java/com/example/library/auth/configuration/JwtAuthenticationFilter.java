@@ -1,7 +1,8 @@
-package com.example.library.configuration;
+package com.example.library.auth.configuration;
 
-import com.example.library.service.Implement.JwtService;
+import com.example.library.auth.service.JwtService;
 import com.example.library.service.Interface.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserService userService;
 
+    @Autowired
     public JwtAuthenticationFilter(JwtService jwtService, UserService userService) {
         this.jwtService = jwtService;
         this.userService = userService;

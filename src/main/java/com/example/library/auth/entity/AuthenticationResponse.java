@@ -1,4 +1,4 @@
-package com.example.library.entity;
+package com.example.library.auth.entity;
 
 import lombok.Builder;
 import lombok.Data;

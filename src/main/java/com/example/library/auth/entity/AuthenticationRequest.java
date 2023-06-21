@@ -1,4 +1,4 @@
-package com.example.library.entity;
+package com.example.library.auth.entity;
 
 public class AuthenticationRequest {
     private String username;

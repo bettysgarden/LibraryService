@@ -1,4 +1,4 @@
-package com.example.library.enums;
+package com.example.library.auth.enums;
 
 public enum Role {
     User,

@@ -1,4 +1,4 @@
-package com.example.library.configuration;
+package com.example.library.auth.configuration;
 
 import com.example.library.exception.ResourceNotFoundException;
 import com.example.library.repository.Interface.UserRepository;
@@ -20,13 +20,14 @@ public class ApplicationConfig {
 
     private final UserRepository userRepository;
 
+    @Autowired
     public ApplicationConfig(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> (UserDetails) userRepository.findUserByUsername(username)
+        return username -> userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 

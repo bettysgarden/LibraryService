@@ -9,10 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.HashSet;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -27,6 +29,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User save(User user) {
+        logger.debug("inside save() method");
+        try {
+            return userRepository.save(user);
+        } catch (Exception e) {
+            logger.error("Error occurred while saving user: {}", user, e);
+            throw e;
+        }
+    }
+    @Override
     public Optional<User> findById(long id) {
         logger.debug("inside findById() method");
         try {
@@ -37,24 +49,15 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public User findByUsername(String username) {
-        logger.debug("inside findByUsername() method");
-        try {
-            return userRepository.findUserByUsername(username)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        } catch (Exception e) {
-            logger.error("Error occurred while finding user by username: {}", username, e);
-            throw e;
-        }
+    private User findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         logger.debug("Inside loadUserByUsername() method");
         try {
-            User user = userRepository.findUserByUsername(username)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+            User user = findUserByUsername(username);
 
             // Perform the conversion from User to UserDetails
             UserDetails userDetails = convertToUserDetails(user);
@@ -91,16 +94,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public User save(User user) {
-        logger.debug("inside save() method");
-        try {
-            return userRepository.save(user);
-        } catch (Exception e) {
-            logger.error("Error occurred while saving user: {}", user, e);
-            throw e;
-        }
-    }
 
     @Override
     public void deleteById(long id) {

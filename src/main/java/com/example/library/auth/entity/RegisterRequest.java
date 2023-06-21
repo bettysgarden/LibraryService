@@ -1,7 +1,7 @@
-package com.example.library.entity;
+package com.example.library.auth.entity;
 
 
-import com.example.library.enums.Role;
+import com.example.library.auth.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

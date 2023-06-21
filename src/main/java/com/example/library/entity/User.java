@@ -1,6 +1,7 @@
 package com.example.library.entity;
 
-import com.example.library.enums.Role;
+import com.example.library.auth.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,7 +46,7 @@ public class User implements UserDetails {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, age, location, username, password, reviews, comments, role);
+        return Objects.hash(id, age, location, username, password, reviews, comments);
     }
 
     @Enumerated(EnumType.STRING)
@@ -106,6 +107,36 @@ public class User implements UserDetails {
         return password;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -143,36 +174,6 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(age, user.age) && Objects.equals(location, user.location) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(reviews, user.reviews) && Objects.equals(comments, user.comments) && role == user.role;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
+        return Objects.equals(id, user.id) && Objects.equals(age, user.age) && Objects.equals(location, user.location) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(reviews, user.reviews) && Objects.equals(comments, user.comments);
     }
 }

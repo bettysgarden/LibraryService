@@ -1,4 +1,4 @@
-package com.example.library.configuration;
+package com.example.library.auth.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +27,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+        //noinspection removal
         http.csrf()
                 .disable()
                 .authorizeHttpRequests()

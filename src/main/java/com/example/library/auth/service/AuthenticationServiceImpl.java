@@ -1,8 +1,9 @@
-package com.example.library.service.Implement;
+package com.example.library.auth.service;
 
-import com.example.library.entity.AuthenticationRequest;
-import com.example.library.entity.AuthenticationResponse;
-import com.example.library.entity.RegisterRequest;
+import com.example.library.auth.entity.AuthenticationRequest;
+import com.example.library.auth.entity.AuthenticationResponse;
+import com.example.library.entity.User;
+import com.example.library.auth.entity.RegisterRequest;
 import com.example.library.repository.Interface.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +19,7 @@ public class AuthenticationServiceImpl {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-
+    @Autowired
     public AuthenticationServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -28,7 +29,7 @@ public class AuthenticationServiceImpl {
     }
 
     public AuthenticationResponse register(RegisterRequest request) {
-        var user = com.example.library.entity.User.builder()
+        var user = User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())

@@ -12,8 +12,6 @@ public interface UserService {
     void setUserRepository(UserRepository userRepository);
 
     Optional<User> findById(long id);
-    User findByUsername(String username);
-
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
     List<User> getAll();
