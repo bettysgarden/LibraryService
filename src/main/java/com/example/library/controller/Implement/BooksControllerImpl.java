@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,14 +24,24 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/books")
 public class BooksControllerImpl implements BooksController {
-    private BooksServiceImpl bookService;
-    private ReviewServiceImpl reviewService;
-    private final Logger logger = LoggerFactory.getLogger(BooksControllerImpl.class);
+    @Autowired
+    private  BooksServiceImpl bookService;
 
     @Autowired
+    private  ReviewServiceImpl reviewService;
+
+    private final Logger logger = LoggerFactory.getLogger(BooksControllerImpl.class);
+
+    @Override
     public void setBooksService(BooksServiceImpl booksService) {
         this.bookService = booksService;
     }
+
+    @Override
+    public void setReviewService(ReviewServiceImpl reviewService) {
+        this.reviewService = reviewService;
+    }
+
 
     @Autowired
     public void setReviewService(ReviewServiceImpl reviewService) {
