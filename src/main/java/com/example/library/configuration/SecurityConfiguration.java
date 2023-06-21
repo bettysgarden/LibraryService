@@ -11,20 +11,24 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+
 public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
+
     public SecurityConfiguration(JwtAuthenticationFilter jwtAuthFilter, AuthenticationProvider authenticationProvider) {
         this.jwtAuthFilter = jwtAuthFilter;
+
         this.authenticationProvider = authenticationProvider;
     }
-    // FIXME: what the hell does it mean "deprecated and marked for removal
-    @SuppressWarnings("removal")
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
+
+        http.csrf()
+                .disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/auth/**", "/api/event/**")
                 .permitAll()
