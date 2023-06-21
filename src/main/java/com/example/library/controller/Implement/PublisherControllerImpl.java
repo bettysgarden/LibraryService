@@ -46,7 +46,7 @@ public class PublisherControllerImpl implements PublisherController {
         }
     }
 
-    @Operation(summary = "Get a publisher by ID", tags = "publishers")
+    @Operation(summary = "Get a publisher by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the publisher"),
             @ApiResponse(responseCode = "404", description = "Publisher not found"),
@@ -68,7 +68,7 @@ public class PublisherControllerImpl implements PublisherController {
         }
     }
 
-    @Operation(summary = "Create a new publisher", tags = "publishers")
+    @Operation(summary = "Create a new publisher")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully created the publisher"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -85,7 +85,7 @@ public class PublisherControllerImpl implements PublisherController {
         }
     }
 
-    @Operation(summary = "Delete a publisher by ID", tags = "publishers")
+    @Operation(summary = "Delete a publisher by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Successfully deleted the publisher"),
             @ApiResponse(responseCode = "500", description = "Internal server error")

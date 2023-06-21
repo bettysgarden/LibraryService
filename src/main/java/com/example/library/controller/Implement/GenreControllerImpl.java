@@ -30,7 +30,7 @@ public class GenreControllerImpl implements GenreController {
         this.genreServiceImpl = genreServiceImpl;
     }
 
-    @Operation(summary = "Get all genres", tags = "genres")
+    @Operation(summary = "Get all genres")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved genres"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -47,7 +47,7 @@ public class GenreControllerImpl implements GenreController {
         }
     }
 
-    @Operation(summary = "Get a genre by ID", tags = "genres")
+    @Operation(summary = "Get a genre by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the genre"),
             @ApiResponse(responseCode = "404", description = "Genre not found"),
@@ -69,7 +69,7 @@ public class GenreControllerImpl implements GenreController {
         }
     }
 
-    @Operation(summary = "Create a new genre", tags = "genres")
+    @Operation(summary = "Create a new genre")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully created the genre"),
             @ApiResponse(responseCode = "500", description = "Internal server error")

@@ -31,7 +31,7 @@ public class ReviewControllerImpl implements ReviewController {
         this.reviewServiceImpl = reviewServiceImpl;
     }
 
-    @Operation(summary = "Get all reviews", tags = "reviews")
+    @Operation(summary = "Get all reviews")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved reviews"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -48,7 +48,7 @@ public class ReviewControllerImpl implements ReviewController {
         }
     }
 
-    @Operation(summary = "Get a review by ID", tags = "reviews")
+    @Operation(summary = "Get a review by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the review"),
             @ApiResponse(responseCode = "404", description = "Review not found"),
@@ -70,7 +70,7 @@ public class ReviewControllerImpl implements ReviewController {
         }
     }
 
-    @Operation(summary = "Create a new review", tags = "reviews")
+    @Operation(summary = "Create a new review")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully created the review"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -87,7 +87,7 @@ public class ReviewControllerImpl implements ReviewController {
         }
     }
 
-    @Operation(summary = "Delete a review by ID", tags = "reviews")
+    @Operation(summary = "Delete a review by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Successfully deleted the review"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
