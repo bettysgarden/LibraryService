@@ -3,6 +3,12 @@ package com.example.library.controller.Implement;
 import com.example.library.controller.Interface.UserController;
 import com.example.library.entity.User;
 import com.example.library.service.Implement.UserServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@Tag(name = "Users", description = "Operations related to users")
 @RestController
 @RequestMapping("/api/users")
 public class UserControllerImpl implements UserController {
@@ -25,7 +32,8 @@ public class UserControllerImpl implements UserController {
         this.userServiceImpl = userServiceImpl;
     }
 
-    @Override
+    @Operation(summary = "Get all users")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)))
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         logger.info("Getting all users");
@@ -38,9 +46,11 @@ public class UserControllerImpl implements UserController {
         }
     }
 
-    @Override
+    @Operation(summary = "Get a user by ID")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)))
+    @ApiResponse(responseCode = "404", description = "User not found")
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<User>> getUserById(@PathVariable Long id) {
+    public ResponseEntity<Optional<User>> getUserById(@PathVariable @Parameter(description = "User ID") Long id) {
         logger.info("Getting user by ID: {}", id);
         try {
             Optional<User> user = userServiceImpl.findById(id);
@@ -55,9 +65,10 @@ public class UserControllerImpl implements UserController {
         }
     }
 
-    @Override
+    @Operation(summary = "Create a user")
+    @ApiResponse(responseCode = "201", description = "User created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)))
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@RequestBody @Parameter(description = "User object") User user) {
         logger.info("Creating a new user: {}", user);
         try {
             User createdUser = userServiceImpl.save(user);
@@ -68,9 +79,11 @@ public class UserControllerImpl implements UserController {
         }
     }
 
-    @Override
+    @Operation(summary = "Delete a user by ID")
+    @ApiResponse(responseCode = "204", description = "User deleted")
+    @ApiResponse(responseCode = "404", description = "User not found")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable @Parameter(description = "User ID") Long id) {
         logger.info("Deleting user with ID: {}", id);
         try {
             userServiceImpl.deleteById(id);

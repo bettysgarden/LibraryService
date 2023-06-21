@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import org.mockito.MockitoAnnotations;
 
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
