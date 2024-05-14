@@ -1,7 +1,6 @@
 package com.example.library.controller.Implement;
 
 import com.example.library.controller.Interface.ReviewController;
-import com.example.library.entity.Comment;
 import com.example.library.entity.Review;
 import com.example.library.service.Implement.ReviewServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -100,25 +99,6 @@ public class ReviewControllerImpl implements ReviewController {
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             logger.error("Error occurred while deleting review with ID: {}", id, e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @Operation(summary = "Get comments for a review")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved comments for the review"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("/review/{reviewId}")
-    public ResponseEntity<List<Comment>> getCommentsForReview(@PathVariable Long reviewId) {
-        logger.info("Getting comments for review with ID: {}", reviewId);
-        try {
-            Review review = new Review();
-            review.setId(reviewId);
-            List<Comment> comments = reviewServiceImpl.getCommentsForReview(review);
-            return ResponseEntity.ok(comments);
-        } catch (Exception e) {
-            logger.error("Error occurred while getting reviews for book with ID: {}", reviewId, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

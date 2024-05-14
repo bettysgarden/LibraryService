@@ -25,9 +25,6 @@ public class Book {
     @Column(name = "rating", columnDefinition = "integer default 0")
     private Double rating;
 
-    @Column(name = "year_published")
-    private Integer yearPublished;
-
     @Column(name = "description", length = 10000)
     private String description;
 
@@ -58,26 +55,18 @@ public class Book {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Review> reviews = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "publisher_idpublisher", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    protected Publisher publisher;
-
     public Book() {
     }
 
-    public Book(String title, Integer yearPublished, String description, String coverUrl) {
+    public Book(String title, String description, String coverUrl) {
         this.title = title;
-        this.yearPublished = yearPublished;
         this.description = description;
         this.coverUrl = coverUrl;
     }
 
-    public Book(Long id, String title, Integer yearPublished, String description, String coverUrl) {
+    public Book(Long id, String title, String description, String coverUrl) {
         this.id = id;
         this.title = title;
-        this.yearPublished = yearPublished;
         this.description = description;
         this.coverUrl = coverUrl;
     }
@@ -104,14 +93,6 @@ public class Book {
 
     public void setRating(Double rating) {
         this.rating = rating;
-    }
-
-    public Integer getYearPublished() {
-        return yearPublished;
-    }
-
-    public void setYearPublished(Integer yearPublished) {
-        this.yearPublished = yearPublished;
     }
 
     public String getDescription() {
@@ -154,18 +135,10 @@ public class Book {
         this.reviews = reviews;
     }
 
-    public Publisher getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(Publisher publisher) {
-        this.publisher = publisher;
-    }
-
     @Override
     public String toString() {
         return "Book [id=" + id + ", title=" + title +
-                ", description=" + description + ", yearPublished=" + yearPublished +
+                ", description=" + description +
                 ", coverUrl=" + coverUrl + ", rating=" + rating + "]";
     }
 

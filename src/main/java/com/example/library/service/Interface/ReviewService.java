@@ -1,7 +1,6 @@
 package com.example.library.service.Interface;
 
 import com.example.library.entity.Book;
-import com.example.library.entity.Comment;
 import com.example.library.entity.Review;
 import com.example.library.repository.Interface.ReviewRepository;
 import org.springframework.cache.annotation.CacheEvict;
@@ -26,8 +25,6 @@ public interface ReviewService {
 
     @CacheEvict(value = "averageRating", key = "#book.id")
     void updateReviewRating(Book book, Double rating);
-
-    List<Comment> getCommentsForReview(Review review);
 
     List<Review> getReviewsForBook(Book book);
 }

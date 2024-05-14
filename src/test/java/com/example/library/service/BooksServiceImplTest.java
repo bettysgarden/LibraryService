@@ -61,8 +61,8 @@ class BooksServiceImplTest {
     @Test
     void testGetAll() {
 
-        Book book1 = new Book(1L, "Title 1", 2023, "Description 1", "Cover 1");
-        Book book2 = new Book(2L, "Title 2", 2023, "Description 2", "Cover 2");
+        Book book1 = new Book(1L, "Title 1", "Description 1", "Cover 1");
+        Book book2 = new Book(2L, "Title 2", "Description 2", "Cover 2");
         List<Book> books = Arrays.asList(book1, book2);
 
         when(booksRepository.findAll()).thenReturn(books);

@@ -37,7 +37,7 @@ public GroupedOpenApi allApis() {
                         .version(appVersion)
                         .description(appDescription)
                         .license(new License().name("Apache 2.0").url("https://www.apache.org/licenses/LICENSE-2.0.html"))
-                        .contact(new Contact().name("Your Name").email("your-email@example.com")));
+                        .contact(new Contact().name("Elizaveta Kolesnikova").email("kole8920227@gmail.com")));
     }
 }
 

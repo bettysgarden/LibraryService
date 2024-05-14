@@ -30,14 +30,6 @@ public class Review {
     @JsonIgnore
     private Book book;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_iduser", nullable = false)
-    @JsonIgnore
-    private User user;
-
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
-
     public Review() {
     }
 
@@ -90,22 +82,6 @@ public class Review {
 
     public void setBook(Book book) {
         this.book = book;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
     }
 
     @Override

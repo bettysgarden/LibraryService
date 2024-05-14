@@ -1,7 +1,6 @@
 package com.example.library.repository.Interface;
 
 import com.example.library.entity.Book;
-import com.example.library.entity.Comment;
 import com.example.library.entity.Review;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
