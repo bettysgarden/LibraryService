@@ -34,7 +34,7 @@ class BooksServiceImplTest {
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         booksService.setReviewService(reviewService);
         booksService.setBooksRepository(booksRepository);
     }

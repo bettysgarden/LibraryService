@@ -2,14 +2,17 @@ package com.example.library.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.sql.Timestamp;
-import java.util.*;
 
 @Entity
 @Table(name = "review")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,92 +21,18 @@ public class Review {
     @Column(name = "rating", nullable = false)
     private Double rating;
 
-    @Column(name = "content", length = 10000)
+    @Column(name = "content", length = 500)
     private String content;
 
     @Column(name = "timeadded", nullable = false)
     private Timestamp timeAdded;
+
+    @Column(name = "userid", nullable = false)
+    private Long userid;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "book_idbook", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Book book;
-
-    public Review() {
-    }
-
-    public Review(Double rating, String content) {
-        this.rating = rating;
-        this.content = content;
-    }
-
-    public Review(Long id, Double rating, String content) {
-        this.id = id;
-        this.rating = rating;
-        this.content = content;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Double getRating() {
-        return rating;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Timestamp getTimeAdded() {
-        return timeAdded;
-    }
-
-    public void setTimeAdded(Timestamp timeAdded) {
-        this.timeAdded = timeAdded;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
-    @Override
-    public String toString() {
-        return "Review{" +
-                "id=" + id +
-                ", rating=" + rating +
-                ", content='" + content + '\'' +
-                ", timeAdded=" + timeAdded +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Review)) return false;
-        Review review = (Review) o;
-        return id == review.id && Objects.equals(rating, review.rating) && Objects.equals(content, review.content) && Objects.equals(timeAdded, review.timeAdded);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, rating, content, timeAdded);
-    }
 }

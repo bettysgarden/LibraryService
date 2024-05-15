@@ -42,6 +42,7 @@ class GenreControllerImplTest {
     void testGetAllGenres() throws Exception {
         // Prepare
         List<Genre> genres = new ArrayList<>();
+
         genres.add(new Genre(1L, "Fiction"));
         genres.add(new Genre(2L, "Mystery"));
         when(genreServiceImpl.getAll()).thenReturn(genres);

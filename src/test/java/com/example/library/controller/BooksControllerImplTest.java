@@ -36,7 +36,7 @@ class BooksControllerImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         booksController.setBooksService(booksService);
         booksController.setReviewService(reviewService);
         mockMvc = MockMvcBuilders.standaloneSetup(booksController).build();
@@ -59,7 +59,7 @@ class BooksControllerImplTest {
 
     @Test
     void getBookById_NotFound() throws Exception {
-        Long bookId = 1L;
+        long bookId = 1L;
 
         when(booksService.findById(bookId)).thenReturn(Optional.empty());
 
@@ -72,7 +72,7 @@ class BooksControllerImplTest {
 
     @Test
     void testGetBookById() {
-        Long bookId = 1L;
+        long bookId = 1L;
         Book book = new Book(1L, "Title 1", "Description 1", "Cover 1");
         Optional<Book> optionalBook = Optional.of(book);
         when(booksService.findById(bookId)).thenReturn(optionalBook);
@@ -98,7 +98,7 @@ class BooksControllerImplTest {
 
     @Test
     void testDeleteBook() {
-        Long bookId = 1L;
+        long bookId = 1L;
 
         ResponseEntity<Void> response = booksController.deleteBook(bookId);
 

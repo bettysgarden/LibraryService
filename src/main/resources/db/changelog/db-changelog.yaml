@@ -1,0 +1,191 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: kolesnikova
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: author
+      changes:
+        - createTable:
+            tableName: author
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: website
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: VARCHAR(10000)
+
+  - changeSet:
+      id: 2
+      author: kolesnikova
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: book
+      changes:
+        - createTable:
+            tableName: book
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rating
+                  type: DOUBLE
+              - column:
+                  name: description
+                  type: VARCHAR(10000)
+              - column:
+                  name: cover_url
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 3
+      author: kolesnikova
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: genre
+      changes:
+        - createTable:
+            tableName: genre
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 4
+      author: kolesnikova
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: review
+      changes:
+        - createTable:
+            tableName: review
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: rating
+                  type: DOUBLE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: VARCHAR(500)
+              - column:
+                  name: timeadded
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: userid
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: book_idbook
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+            constraints:
+              primaryKey: id
+              foreignKeyConstraintName: fk_book_id
+              referencedTableName: book
+              referencedColumnNames: id
+              onDelete: CASCADE
+
+  - changeSet:
+      id: 5
+      author: kolesnikova
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: author_has_book
+      changes:
+        - createTable:
+            tableName: author_has_book
+            columns:
+              - column:
+                  name: author_idauthor
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: book_idbook
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+            constraints:
+              primaryKey: author_idauthor, book_idbook
+              foreignKeyConstraintName: fk_author_id_book
+              referencedTableName: author
+              referencedColumnNames: id
+              onDelete: CASCADE
+
+  - changeSet:
+      id: 6
+      author: kolesnikova
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: book_has_genre
+      changes:
+        - createTable:
+            tableName: book_has_genre
+            columns:
+              - column:
+                  name: book_idbook
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: genre_idgenre
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+            constraints:
+              primaryKey: book_idbook, genre_idgenre
+              foreignKeyConstraintName: fk_book_id_genre
+              referencedTableName: book
+              referencedColumnNames: id
+              onDelete: CASCADE
